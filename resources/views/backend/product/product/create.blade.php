@@ -4,9 +4,14 @@
 @endsection
 @section('style')
     <link rel="stylesheet" href="{{ asset('backend') }}/css/custom.css">
-
+    <link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet">
+    <script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
     <link href="{{ asset('backend') }}/css/plugins/select2/select2.min.css" rel="stylesheet">
     <script src="{{ asset('ckeditor/ckeditor.js') }}"></script>
+    <link href="{{ asset('backend') }}/css/plugins/switchery/switchery.css" rel="stylesheet">
+    <link href="{{ asset('backend') }}/css/index.css" rel="stylesheet">
+    <link rel="stylesheet" href="{{ asset('backend') }}/css/custom.css">
+    <link rel="stylesheet" href="{{ asset('backend') }}/css/tag.css">
 @endsection
 @section('content')
     @include('backend.components.title', [
@@ -102,6 +107,156 @@
                                                                 class="form-control">
                                                         </div>
                                                         <div class="form-row col-lg-6">
+                                                            <label for="" class="control-label text-left">Khối
+                                                                lượng sản phẩm
+                                                                <span class="text-danger">(*)</span></label>
+                                                            <input type="text" name="gms"
+                                                                value="{{ old('gms', $product->gms ?? '') }}"
+                                                                class="form-control">
+                                                        </div>
+                                                        <div class="form-row col-lg-6">
+                                                            <label for="" class="control-label text-left">Giá
+                                                                tiền
+                                                                <span class="text-danger">(*)</span></label>
+                                                            <input type="text" name="price"
+                                                                value="{{ old('price', $product->price ?? '') }}"
+                                                                class="form-control">
+                                                        </div>
+                                                        <div class="form-row col-lg-6">
+                                                            <label for="" class="control-label text-left">giá giảm
+                                                                <span class="text-danger">(*)</span></label>
+                                                            <input type="text" name="seller"
+                                                                value="{{ old('seller', $product->seller ?? '') }}"
+                                                                class="form-control">
+                                                        </div>
+                                                        <div class="col-lg-12">
+                                                            <div class="upload__box">
+                                                                <div class="upload__btn-box">
+                                                                    <label class="btn-primary btn">
+                                                                        <p>Upload images</p>
+                                                                        <input type="file" multiple=""
+                                                                            data-max_length="20" name="image[]"
+                                                                            class="upload__inputfile">
+                                                                    </label>
+                                                                </div>
+                                                                <div class="upload__img-wrap"></div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-lg-12">
+                                                            <div class="form-row">
+                                                                <div class="form-check form-switch switch-check">
+                                                                    <label class="switch">
+                                                                        <input type="checkbox" class="status"
+                                                                            data-field="publish" data-model="Product"
+                                                                            name="is_hot" data-id="" value="1">
+                                                                        <span class="slider round"></span>
+                                                                        <meta name="csrf-token"
+                                                                            content="{{ csrf_token() }}" />
+                                                                    </label>
+
+                                                                    <label class="form-check-label"
+                                                                        for="flexSwitchCheckDefault">Sản phẩm hot</label>
+                                                                </div>
+                                                                <div class="form-check form-switch switch-check">
+                                                                    <label class="switch">
+                                                                        <input type="checkbox" class="status js-switch-"
+                                                                            data-field="publish" data-model="Product"
+                                                                            name="is_sale" data-id="" value="1">
+                                                                        <span class="slider round"></span>
+                                                                        <meta name="csrf-token"
+                                                                            content="{{ csrf_token() }}" />
+                                                                    </label>
+
+                                                                    <label class="form-check-label"
+                                                                        for="flexSwitchCheckDefault">Sản phẩm sale</label>
+                                                                </div>
+                                                                <div class="form-check form-switch switch-check">
+                                                                    <label class="switch">
+                                                                        <input type="checkbox" class="status js-switch"
+                                                                            data-field="publish" data-model="Product"
+                                                                            name="top_view" value="1">
+                                                                        <span class="slider round"></span>
+                                                                        <meta name="csrf-token"
+                                                                            content="{{ csrf_token() }}" />
+                                                                    </label>
+                                                                    <label class="form-check-label"
+                                                                        for="flexSwitchCheckDefault">Sản phẩm nổi
+                                                                        bật</label>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <hr>
+
+                                    </div>
+                                </div>
+                                <div class="wrapper wrapper-content animated fadeInRight">
+                                    <div class="row pl-2">
+                                        <div class="col-lg-4">
+                                            <div class="panel-head">
+                                                <div class="panel-title">Thông tin bổ sung cho sản phẩm</div>
+                                                <div class="panel-description">
+                                                    <p>Nhập thông tin bổ sung cho sản phẩm</p>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-8">
+                                            <div class="ibox">
+                                                <div class="ibox-content">
+                                                    <div class="row mb15">
+                                                        <div class="col-lg-12">
+                                                            <div class="form-row">
+                                                                <label for="" class="control-label text-left">Tag
+                                                                    sản phẩm</label>
+                                                                <select name="tag[]" multiple="multiple"
+                                                                    class="form-control js-select2-multi">
+                                                                    @if (isset($materials))
+                                                                        @foreach ($materials as $material)
+                                                                            <option value="{{ $material->id }}">
+                                                                                {{ $material->name }}</option>
+                                                                        @endforeach
+                                                                    @endif
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-lg-12">
+                                                            <div class="form-row">
+                                                                <label for=""
+                                                                    class="control-label text-left">Đường
+                                                                    dẫn sản phẩm
+                                                                    <span class="text-danger">(*)</span></label>
+                                                                <input type="text" name="slug"
+                                                                    value="{{ old('slug', $product->slug ?? '') }}"
+                                                                    class="form-control slug" placeholder=""
+                                                                    autocomplete="off">
+                                                            </div>
+
+                                                        </div>
+                                                        <div class="col-lg-12">
+                                                            <div class="form-row" style="margin-bottom: 10px;">
+                                                                <label for="" class="control-label text-left">Danh
+                                                                    mục sản phẩm
+                                                                </label>
+                                                                <select name="categories_id"
+                                                                    class="form-control districts setupSelect2 location"
+                                                                    data-target="wards">
+                                                                    <option value="0">Chọn danh mục</option>
+                                                                    {{ getCategories($categories, old('categories_id')) }}
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-row col-lg-6">
+                                                            <label for="" class="control-label text-left">SKU
+                                                                <span class="text-danger">(*)</span></label>
+                                                            <input type="text" name="sku"
+                                                                value="{{ old('sku', $product->sku ?? '') }}"
+                                                                class="form-control">
+                                                        </div>
+                                                        <div class="form-row col-lg-6">
                                                             <label for="" class="control-label text-left">Giá
                                                                 tiền
                                                                 <span class="text-danger">(*)</span></label>
@@ -122,23 +277,15 @@
                                                                 <label for=""
                                                                     class="control-label text-left">description
                                                                     <span class="text-danger">(*)</span></label>
-                                                                <textarea type="text" id="meta_description" name="description" value="" class="form-control" placeholder=""
-                                                                    autocomplete="off">{{ old('description', $product->description ?? '') }}</textarea>
+                                                                <textarea type="text" id="meta_description" name="description" value="" class="form-control"
+                                                                    placeholder="" autocomplete="off">{{ old('description', $product->description ?? '') }}</textarea>
                                                             </div>
                                                         </div>
                                                         <div class="col-lg-8">
-                                                            <div class="form-row">
-                                                                <label for="" class="control-label text-left">Chất
-                                                                    liệu</label>
-                                                                <select name="material_id[]" multiple="multiple"
-                                                                    class="form-control js-select2-multi">
-                                                                    @if (isset($materials))
-                                                                        @foreach ($materials as $material)
-                                                                            <option value="{{ $material->id }}">
-                                                                                {{ $material->name }}</option>
-                                                                        @endforeach
-                                                                    @endif
-                                                                </select>
+                                                            <div class="tags-input">
+                                                                <ul id="tags"></ul>
+                                                                <input type="text" id="input-tag"
+                                                                    placeholder="Enter tag name" />
                                                             </div>
                                                         </div>
                                                         <div class="form-row col-lg-4">
@@ -149,24 +296,20 @@
                                                                 class="form-control">
                                                         </div>
                                                         <div class="col-lg-12">
-                                                            <div class="upload__box">
-                                                                <div class="upload__btn-box">
-                                                                    <label class="upload__btn">
-                                                                        <p>Upload images</p>
-                                                                        <input type="file" multiple=""
-                                                                            data-max_length="20" name="image[]"
-                                                                            class="upload__inputfile">
-                                                                    </label>
-                                                                </div>
-                                                                <div class="upload__img-wrap"></div>
+                                                            <div class="upload__btn-box">
+                                                                <label class="upload__btn">
+                                                                    <p>Upload images</p>
+                                                                    <input type="file" multiple=""
+                                                                        data-max_length="20" name="image[]"
+                                                                        class="upload__inputfile">
+                                                                </label>
                                                             </div>
+                                                            <div class="upload__img-wrap"></div>
                                                         </div>
                                                         <div class="col-lg-12">
                                                             <div class="form-row">
                                                                 <div class="form-check form-switch">
-                                                                    <input class="form-check-input" type="checkbox"
-                                                                        role="switch" id="flexSwitchCheckDefault"
-                                                                        name="is_hot" value="1">
+
                                                                     <label class="form-check-label"
                                                                         for="flexSwitchCheckDefault">Sản phẩm hot</label>
                                                                 </div>
@@ -192,11 +335,11 @@
                                             </div>
                                         </div>
                                         <hr>
-                                        <div class="text-right mb15">
-                                            <button class="btn btn-primary" type="submit">Lưu
-                                                lại</button>
-                                        </div>
                                     </div>
+                                </div>
+                                <div class="text-right mb15">
+                                    <button class="btn btn-primary" type="submit">Lưu
+                                        lại</button>
                                 </div>
                             </form>
                         </div>
@@ -211,6 +354,8 @@
     <script src="{{ asset('backend') }}/libary/scripts.js"></script>
     <script src="{{ asset('backend') }}/libary/imagemulti.js"></script>
     <script src="{{ asset('backend') }}/libary/selectM.js"></script>
+    <script src="{{ asset('backend') }}/libary/tag.js"></script>
+    <script src="{{ asset('backend') }}/js/plugins/switchery/switchery.js"></script>
     <script>
         CKEDITOR.replace('meta_description');
     </script>

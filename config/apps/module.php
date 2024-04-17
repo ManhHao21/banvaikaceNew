@@ -32,7 +32,7 @@ return [
             'name' => 'post',
             'subModule' => [
                 [
-                    'title' => 'Quản lí danh mục',
+                    'title' => 'Danh mục bài viết',
                     'route' => '\admin\postcategory'
                 ],
                 [
@@ -56,7 +56,7 @@ return [
                     'route' => '\admin\material'
                 ],
                 [
-                    'title' => 'Quản lí danh mục sản phẩm',
+                    'title' => 'Danh mục sản phẩm',
                     'route' => '\admin\category'
                 ],
                 [
