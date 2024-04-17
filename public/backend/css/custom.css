@@ -874,7 +874,7 @@ a {
 image product
 */
 .upload__box {
-    padding: 40px;
+    padding: 10px;
 }
 
 .upload__inputfile {
@@ -910,7 +910,7 @@ image product
 }
 
 .upload__btn-box {
-    margin-bottom: 10px;
+    margin-bottom: 4px;
 }
 
 .upload__img-wrap {
@@ -951,4 +951,10 @@ image product
     background-size: cover;
     position: relative;
     padding-bottom: 100%;
+}
+
+.switch-check {
+    display: flex;
+    align-items: center;
+    gap: 10px;
 }
