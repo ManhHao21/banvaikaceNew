@@ -1,67 +1,59 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zxx">
 
 @include('frontend.components.head')
 
 <body>
-    <!-- Topbar Start -->
-    @include('frontend.components.top-bar')
+    <!-- Page Preloder -->
+    <div id="preloder">
+        <div class="loader"></div>
+    </div>
 
-    <!-- Topbar End -->
+    <!-- Offcanvas Menu Begin -->
+    @include('frontend.components.menu-top')
 
+    <!-- Offcanvas Menu End -->
 
-    <!-- Navbar Start -->
-    @include('frontend.components.nav-bar')
+    <!-- Header Section Begin -->
+    @include('frontend.components.header')
 
-    <!-- Navbar End -->
+    <!-- Header Section End -->
 
+    <!-- Categories Section Begin -->
+    @include('frontend.components.categories')
 
-    <!-- Featured Start -->
-    @include('frontend.components.feature')
+    <!-- Categories Section End -->
 
-    <!-- Featured End -->
+    <!-- Product Section Begin -->
+    @include('frontend.components.product')
 
+    <!-- Product Section End -->
 
-    <!-- Categories Start -->
-    @include('frontend.components.cagtegories')
+    <!-- Banner Section Begin -->
+    @include('frontend.components.banner')
 
-    <!-- Categories End -->
+    <!-- Banner Section End -->
 
+    <!-- Trend Section Begin -->
+    @include('frontend.components.trend')
 
-    <!-- Offer Start -->
-    @include('frontend.components.offer')
+    <!-- Trend Section End -->
 
-    <!-- Offer End -->
+    <!-- Discount Section Begin -->
+    @include('frontend.components.discount')
 
+    <!-- Discount Section End -->
 
-    <!-- Products Start -->
-    @include('frontend.components.product-start')
+    <!-- Services Section Begin -->
+    @include('frontend.components.services')
 
-    <!-- Products End -->
-    <!-- Products Start -->
-    @include('frontend.components.product-start')
-    <!-- Products End -->
+    <!-- Services Section End -->
 
-
-    <!-- Vendor Start -->
-    @include('frontend.components.vendor')
-
-    <!-- Vendor End -->
-
-
-    <!-- Footer Start -->
+    <!-- Footer Section Begin -->
     @include('frontend.components.footer')
 
-    <!-- Footer End -->
-
-
-    <!-- Back to Top -->
-    <a href="#" class="btn btn-primary back-to-top"><i class="fa fa-angle-double-up"></i></a>
-
-
-    <!-- JavaScript Libraries -->
+    <!-- Footer Section End -->
+    <!-- Js Plugins -->
     @include('frontend.components.script')
-
 </body>
-
 </html>
