@@ -47,4 +47,8 @@ class Product extends Model
     {
         return $this->hasMany(Comment::class, "product_id", "id");
     }
+    public function ImageColorProduct()
+    {
+        return $this->hasMany(Image_color_product::class, "product_id", "id");
+    }
 }

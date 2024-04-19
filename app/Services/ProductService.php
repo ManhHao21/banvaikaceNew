@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Services;
 
 use Carbon\Carbon;
@@ -24,8 +25,7 @@ class ProductService implements ProductServiceInterface
         $condition['publish'] = $request->integer('publish');
         $category = $this->ProductRepository
             ->pagination(
-                $this->paginateSelect()
-                ,
+                $this->paginateSelect(),
                 $condition,
                 [],
                 ['path' => '/admin/product'],
@@ -41,23 +41,40 @@ class ProductService implements ProductServiceInterface
         DB::beginTransaction();
         try {
             $data = $request->except('_token');
+            $images = [];
+
             if ($request->hasFile('image')) {
-                $images = [];
-                dd($data['image']);
                 foreach ($data['image'] as $key => $image) {
                     $images[] = $this->convertImage($image);
                 }
-                $data['image'] = json_encode($images);
             }
-            if ($data['material_id'] && $data['material_id'] != NULL) {
-                $data['material_id'] = json_encode($data['material_id']);
+            $productData = [
+                'name' => $data['name'] ?? null,
+                'slug' => $data['slug'] ?? null,
+                'sku' => $data['sku'] ?? null,
+                'price' => $data['price'] ?? null,
+                'categories_id' => $data['categories_id'] ?? null,
+                'description' => $data['description'] ?? null,
+                'image' => json_encode($images) ?? null,
+                'gms' => $data['gms'] ?? null,
+                'seller' => $data['seller'] ?? null,
+                'publish' => 1,
+                'user_id' => Auth::guard('admin')->id(),
+                'is_hot' => $data['is_hot'] ?? null,
+                'top_view' => $data['top_view'] ?? null,
+            ];
+            $product = $this->ProductRepository->create($productData);
+            $images_color = [];
+            if ($request->hasFile('images_color')) {
+                foreach ($data['images_color'] as $key => $image_color) {
+                    $images_color[] = $this->convertImage($image_color);
+
+                    DB::table('image_color_product')->create([
+                        'product_id' => $product->id,
+                        'image_color' => json_encode($images_color)
+                    ]);
+                }
             }
-            $data['user_id'] = Auth::guard('admin')->id();
-            $data['publish'] = 1;
-            $data['is_hot'] = $data['is_hot'] == 'on' ? '1' : '0';
-            $data['is_sale'] = $data['is_sale'] == 'on' ? '1' : '0';
-            $data['top_view'] = $data['top_view'] == 'on' ? '1' : '0';
-            $product = $this->ProductRepository->create($data);
             DB::commit();
             return true;
         } catch (\Exception $e) {
@@ -66,6 +83,7 @@ class ProductService implements ProductServiceInterface
             return false;
         }
     }
+
     public function updateStatus(array $Product = [])
     {
         DB::beginTransaction();
@@ -166,7 +184,6 @@ class ProductService implements ProductServiceInterface
     public function getCartToOrder($request)
     {
         if ($request['action'] == 'cart') {
-
         } else if ($request['action'] == 'detail') {
             $data =  $this->ProductRepository->getFirstById($request['id']);
             $data['image'] = json_decode($data['image']);
@@ -174,4 +191,3 @@ class ProductService implements ProductServiceInterface
         }
     }
 }
-?>

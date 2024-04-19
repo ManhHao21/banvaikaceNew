@@ -201,14 +201,13 @@
                                                                     placeholder="" autocomplete="off">{{ old('description', $product->description ?? '') }}</textarea>
                                                             </div>
                                                         </div>
-                                                        <div class="col-md-12 mt-3">
+                                                        <div class="col-md-12" style="margin-top: 15px">
                                                             <div class="panel panel-primary">
                                                                 <div class="panel-heading">
-                                                                    <h3>Image Upload</h3>
+                                                                    <h3>Image color</h3>
                                                                 </div>
                                                                 <div class="panel-body">
                                                                     <div class="form-group">
-                                                                        <label for="images">Images</label>
                                                                         <input type="file" name="images_color[]"
                                                                             id="images" multiple class="form-control"
                                                                             required>

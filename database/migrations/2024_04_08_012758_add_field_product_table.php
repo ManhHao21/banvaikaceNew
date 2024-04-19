@@ -13,7 +13,6 @@ return new class extends Migration
     {
         Schema::table('product', function (Blueprint $table) {
             $table->integer('is_hot')->default(0);
-            $table->integer('is_Sale')->default(0);
             $table->integer('top_view')->default(0);
         });
     }

@@ -13,7 +13,6 @@ return new class extends Migration
     {
         Schema::create('image_color_product', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
             $table->integer('product_id');
             $table->text('image_color')->nullable();
             $table->timestamps();
