@@ -64,14 +64,11 @@ class ProductService implements ProductServiceInterface
                 'top_view' => $data['top_view'] ?? null,
             ];
             $product = $this->ProductRepository->create($productData);
-            $images_color = [];
             if ($request->hasFile('images_color')) {
                 foreach ($data['images_color'] as $key => $image_color) {
-                    $images_color[] = $this->convertImage($image_color);
-
-                    DB::table('image_color_product')->create([
+                    $image_color =  DB::table('image_color_product')->insert([
                         'product_id' => $product->id,
-                        'image_color' => json_encode($images_color)
+                        'image_color' =>  $this->convertImage($image_color)
                     ]);
                 }
             }

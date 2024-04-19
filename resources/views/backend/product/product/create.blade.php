@@ -107,8 +107,7 @@
                                                                 class="form-control">
                                                         </div>
                                                         <div class="form-row col-lg-6">
-                                                            <label for="" class="control-label text-left">Khối
-                                                                lượng sản phẩm
+                                                            <label for="" class="control-label text-left">Kích thướcc sản phẩm
                                                                 <span class="text-danger">(*)</span></label>
                                                             <input type="text" name="gms"
                                                                 value="{{ old('gms', $product->gms ?? '') }}"
