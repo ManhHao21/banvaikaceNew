@@ -153,22 +153,8 @@
                                                                         <meta name="csrf-token"
                                                                             content="{{ csrf_token() }}" />
                                                                     </label>
-
                                                                     <label class="form-check-label"
                                                                         for="flexSwitchCheckDefault">Sản phẩm hot</label>
-                                                                </div>
-                                                                <div class="form-check form-switch switch-check">
-                                                                    <label class="switch">
-                                                                        <input type="checkbox" class="status js-switch-"
-                                                                            data-field="publish" data-model="Product"
-                                                                            name="is_sale" data-id="" value="1">
-                                                                        <span class="slider round"></span>
-                                                                        <meta name="csrf-token"
-                                                                            content="{{ csrf_token() }}" />
-                                                                    </label>
-
-                                                                    <label class="form-check-label"
-                                                                        for="flexSwitchCheckDefault">Sản phẩm sale</label>
                                                                 </div>
                                                                 <div class="form-check form-switch switch-check">
                                                                     <label class="switch">
@@ -217,44 +203,23 @@
                                                                     placeholder="" autocomplete="off">{{ old('description', $product->description ?? '') }}</textarea>
                                                             </div>
                                                         </div>
-                                                        <div class="col-lg-6 mt-2">
-                                                            <label for="" class="control-label text-left">Tag sản
-                                                                phẩm</label>
-                                                            <div class="tags-input">
-                                                                <ul id="tags"></ul>
-                                                                <input type="text" id="input-tag" class="form-control"
-                                                                    placeholder="Enter tag name" />
-                                                            </div>
-                                                        </div>
-                                                        <div class="form-row col-lg-6 mt2">
-                                                            <label for="" class="control-label text-left">Seller
-                                                                <span class="text-danger">(*)</span></label>
-                                                            <input type="text" name="seller"
-                                                                value="{{ old('seller', $product->seller ?? '') }}"
-                                                                class="form-control">
-                                                        </div>
-                                                        <div class="col-lg-12">
-                                                            <div class="grid-x grid-padding-x">
-                                                                <div
-                                                                    class="small-10 small-offset-1 medium-8 medium-offset-2 cell">
-                                                                    <form action="upload_file.php" id="img-upload-form"
-                                                                        method="post" enctype="multipart/form-data">
-                                                                        <p>
-                                                                            <label for="upload_imgs"
-                                                                                class="button hollow">Select Your Images
-                                                                                +</label>
-                                                                            <input class="show-for-sr" type="file"
-                                                                                id="upload_imgs" name="upload_imgs[]"
-                                                                                multiple hidden style="display: none;" />
-                                                                        </p>
-                                                                        <div class="quote-imgs-thumbs quote-imgs-thumbs--hidden"
-                                                                            id="img_preview" aria-live="polite"></div>
-                                                                        <p>
-                                                                            <input class="button large expanded"
-                                                                                type="submit" name="submit"
-                                                                                value="Upload Images" />
-                                                                        </p>
-                                                                    </form>
+                                                        <div class="col-md-12 mt-3">
+                                                            <div class="panel panel-primary">
+                                                                <div class="panel-heading">
+                                                                    <h3>Image Upload</h3>
+                                                                </div>
+                                                                <div class="panel-body">
+                                                                    <div class="form-group">
+                                                                        <label for="images">Images</label>
+                                                                        <input type="file" name="images_color[]"
+                                                                            id="images" multiple class="form-control"
+                                                                            required>
+                                                                    </div>
+                                                                    <div class="form-group">
+                                                                        <div id="image_preview" style="width:100%;">
+
+                                                                        </div>
+                                                                    </div>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -265,12 +230,13 @@
                                     </div>
                                     <hr>
                                 </div>
+                                <div class="text-right mb15">
+                                    <button class="btn btn-primary" type="submit">Lưu
+                                        lại</button>
+                                </div>
+                            </form>
                         </div>
-                        <div class="text-right mb15">
-                            <button class="btn btn-primary" type="submit">Lưu
-                                lại</button>
-                        </div>
-                        </form>
+
                     </div>
                 </div>
             </div>

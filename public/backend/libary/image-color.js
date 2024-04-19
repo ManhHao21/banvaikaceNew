@@ -1,82 +1,54 @@
-var imgUpload = document.getElementById("upload_imgs"),
-    imgPreview = document.getElementById("img_preview"),
-    imgUploadForm = document.getElementById("img-upload-form"),
-    totalFiles,
-    previewTitle,
-    previewTitleText,
-    img;
+$(document).ready(function () {
+    var fileArr = [];
 
-imgUpload.addEventListener("change", previewImgs, false);
-imgUploadForm.addEventListener(
-    "submit",
-    function (e) {
-        e.preventDefault();
-        alert(
-            "Images Uploaded! (not really, but it would if this was on your website)"
-        );
-    },
-    false
-);
+    $("#images").change(function () {
+        var total_file = document.getElementById("images").files;
+        if (!total_file.length) return;
 
-function previewImgs(event) {
-    totalFiles = imgUpload.files.length;
+        for (var i = 0; i < total_file.length; i++) {
+            if (total_file[i].size > 1048576) {
+                return false;
+            } else if (!fileExists(total_file[i])) {
+                fileArr.push(total_file[i]);
+                $("#image_preview").append(
+                    "<div class='img-div' id='img-div" +
+                        (fileArr.length - 1) +
+                        "'><img src='" +
+                        URL.createObjectURL(total_file[i]) +
+                        "' class='img-responsive image img-thumbnail' title='" +
+                        total_file[i].name +
+                        "' width='200px' height='200px'><div class='middle'><button id='action-icon' value='img-div" +
+                        (fileArr.length - 1) +
+                        "' class='btn btn-danger' role='" +
+                        total_file[i].name +
+                        "'><i class='fa fa-trash'></i></button></div></div>"
+                );
+            }
+        }
+    });
 
-    if (!!totalFiles) {
-        imgPreview.classList.remove("quote-imgs-thumbs--hidden");
-        previewTitle = document.createElement("p");
-        previewTitle.style.fontWeight = "bold";
-        previewTitleText = document.createTextNode(
-            totalFiles + " Total Images Selected"
-        );
-        previewTitle.appendChild(previewTitleText);
-        imgPreview.appendChild(previewTitle);
+    $("body").on("click", "#action-icon", function (evt) {
+        var divName = this.value;
+        var fileName = $(this).attr("role");
+        $("#" + divName).remove();
+
+        fileArr = fileArr.filter(function (file) {
+            return file.name !== fileName;
+        });
+        var input = document.getElementById("images");
+        input.value = "";
+        evt.preventDefault();
+    });
+
+    function fileExists(file) {
+        for (var i = 0; i < fileArr.length; i++) {
+            if (
+                fileArr[i].name === file.name &&
+                fileArr[i].size === file.size
+            ) {
+                return true;
+            }
+        }
+        return false;
     }
-
-    for (var i = 0; i < totalFiles; i++) {
-        img = document.createElement("img");
-        img.src = URL.createObjectURL(event.target.files[i]);
-        img.classList.add("img-preview-thumb");
-        imgPreview.appendChild(img);
-    }
-}
-var imgUpload = document.getElementById("upload_imgs"),
-    imgPreview = document.getElementById("img_preview"),
-    imgUploadForm = document.getElementById("img-upload-form"),
-    totalFiles,
-    previewTitle,
-    previewTitleText,
-    img;
-
-imgUpload.addEventListener("change", previewImgs, false);
-imgUploadForm.addEventListener(
-    "submit",
-    function (e) {
-        e.preventDefault();
-        alert(
-            "Images Uploaded! (not really, but it would if this was on your website)"
-        );
-    },
-    false
-);
-
-function previewImgs(event) {
-    totalFiles = imgUpload.files.length;
-
-    if (!!totalFiles) {
-        imgPreview.classList.remove("quote-imgs-thumbs--hidden");
-        previewTitle = document.createElement("p");
-        previewTitle.style.fontWeight = "bold";
-        previewTitleText = document.createTextNode(
-            totalFiles + " Total Images Selected"
-        );
-        previewTitle.appendChild(previewTitleText);
-        imgPreview.appendChild(previewTitle);
-    }
-
-    for (var i = 0; i < totalFiles; i++) {
-        img = document.createElement("img");
-        img.src = URL.createObjectURL(event.target.files[i]);
-        img.classList.add("img-preview-thumb");
-        imgPreview.appendChild(img);
-    }
-}
+});
