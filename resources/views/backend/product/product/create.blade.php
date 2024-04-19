@@ -147,8 +147,7 @@
                                                                 <div class="form-check form-switch switch-check">
                                                                     <label class="switch">
                                                                         <input type="checkbox" class="status"
-                                                                            data-field="publish" data-model="Product"
-                                                                            name="is_hot" data-id="" value="1">
+                                                                            name="is_hot" value="1">
                                                                         <span class="slider round"></span>
                                                                         <meta name="csrf-token"
                                                                             content="{{ csrf_token() }}" />
@@ -159,7 +158,6 @@
                                                                 <div class="form-check form-switch switch-check">
                                                                     <label class="switch">
                                                                         <input type="checkbox" class="status js-switch"
-                                                                            data-field="publish" data-model="Product"
                                                                             name="top_view" value="1">
                                                                         <span class="slider round"></span>
                                                                         <meta name="csrf-token"
