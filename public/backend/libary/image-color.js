@@ -26,7 +26,6 @@ $(document).ready(function () {
             }
         }
     });
-test
     $("body").on("click", "#action-icon", function (evt) {
         var divName = this.value;
         var fileName = $(this).attr("role");
