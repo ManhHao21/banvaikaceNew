@@ -17,5 +17,6 @@
 
     <link href="{{asset('backend')}}/css/animate.css" rel="stylesheet">
     <link href="{{asset('backend')}}/css/style.css" rel="stylesheet">
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.css">
     @yield('style')
 </head>

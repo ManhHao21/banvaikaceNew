@@ -63,12 +63,12 @@
                                                     </td>
                                                     <td>
                                                         <div class="d-flex align-items-center list-action action">
-                                                            <a class="badge badge-info mr-2" data-toggle="tooltip"
+                                                            <a class="badge-info mr-2 btn p-2 d-flex btn-action data-toggle="tooltip"
                                                                 data-placement="top" title=""
                                                                 data-original-title="View"
                                                                 href="{{ route('admin.users.edit', $item->id) }}"><i
                                                                     class="fa fa-pencil" aria-hidden="true"></i></a>
-                                                            <a class="badge badge-danger mr-2" data-toggle="tooltip"
+                                                            <a class="badge-danger d-flex btn p-2 btn-action" data-toggle="tooltip"
                                                                 data-placement="top" title=""
                                                                 data-original-title="View"
                                                                 href="{{ route('admin.users.show', $item->id) }}"><i

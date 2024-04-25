@@ -30,7 +30,10 @@
                         <div class="table-responsive">
                             @php
 
-                                $url = $config['method'] == 'create' ? route('admin.category.store') : route('admin.category.update', $category->id);
+                                $url =
+                                    $config['method'] == 'create'
+                                        ? route('admin.category.store')
+                                        : route('admin.category.update', $category->id);
                             @endphp
                             <form action="{{ $url }}" method="POST" class="box">
                                 @csrf
@@ -75,24 +78,20 @@
                                                                     <span class="text-danger">(*)</span></label>
                                                                 <input type="text" name="slug"
                                                                     value="{{ old('slug', $category->slug ?? '') }}"
-                                                                    class="form-control slug" placeholder=""
+                                                                    class="form-control slug" placeholder="Nhập đường dẫn..."
                                                                     autocomplete="off">
                                                             </div>
-
-                                                            <div class="col-lg-12">
-                                                                <div class="form-row">
-                                                                    <label for=""
-                                                                        class="control-label text-left">Danh
-                                                                        mục
-                                                                        cha
-                                                                    </label>
-                                                                    <select name="parent_id"
-                                                                        class="form-control districts setupSelect2 location"
-                                                                        data-target="wards">
-                                                                        <option value="0">Chọn danh mục</option>
-                                                                        {{ getCategories($categories, old('parent_id')) }}
-                                                                    </select>
-                                                                </div>
+                                                            <div class="form-row" style="margin-top: 10px">
+                                                                <label for="cate-name" class="control-label text-left">Danh
+                                                                    mục
+                                                                    cha
+                                                                </label>
+                                                                <select name="parent_id" id="cate-name "
+                                                                    class="form-control districts setupSelect2 location"
+                                                                    data-target="wards">
+                                                                    <option value="0">Chọn danh mục</option>
+                                                                    {{ getCategories($categories, old('parent_id')) }}
+                                                                </select>
                                                             </div>
                                                         </div>
                                                     </div>
