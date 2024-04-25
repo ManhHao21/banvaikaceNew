@@ -42,7 +42,6 @@ class ProductService implements ProductServiceInterface
         try {
             $data = $request->except('_token');
             $images = [];
-
             if ($request->hasFile('image')) {
                 foreach ($data['image'] as $key => $image) {
                     $images[] = $this->convertImage($image);
@@ -64,6 +63,7 @@ class ProductService implements ProductServiceInterface
                 'top_view' => $data['top_view'] ?? null,
             ];
             $product = $this->ProductRepository->create($productData);
+            dd($product)
             if ($request->hasFile('images_color')) {
                 foreach ($data['images_color'] as $key => $image_color) {
                     $image_color =  DB::table('image_color_product')->insert([

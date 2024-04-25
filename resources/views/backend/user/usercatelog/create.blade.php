@@ -30,7 +30,10 @@
                         <div class="table-responsive">
                             @php
 
-                                $url = $config['method'] == 'create' ? route('admin.catelogue.store') : route('admin.catelogue.update', $userCatelog->id);
+                                $url =
+                                    $config['method'] == 'create'
+                                        ? route('admin.catelogue.store')
+                                        : route('admin.catelogue.update', $userCatelog->id);
                             @endphp
                             <form action="{{ $url }}" method="POST" class="box">
                                 @csrf
