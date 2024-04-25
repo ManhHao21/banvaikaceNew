@@ -39,5 +39,4 @@ class ProductRepository extends BaseRepository implements ProductRepositoryInter
         $query->orderBy('id', $order['key']);
         return $query->paginate($perPage)->withQueryString()->withPath(env('APP_URL') . $extend['path']);
     }
-
 }

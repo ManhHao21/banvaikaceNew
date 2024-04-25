@@ -24,20 +24,6 @@
                     },
                     dataType: "json",
                     success: function (response) {
-                        const jsFrame = new JSFrame();
-                        jsFrame.showToast({
-                            html: '<div id="my_element" style="padding:10px;font-size:12px;color:darkgray;">Cập nhật status thành công</div>',
-                            align: "right", // Hiển thị ở phía bên phải
-                            left: "auto", // Tự động điều chỉnh vị trí từ phía trái
-                            top: "auto", // Tự động điều chỉnh vị trí từ phía trên
-                            bottom: 50, // Tăng giá trị của bottom
-                            right: 50, // Tăng giá trị của right
-                            width: 320,
-                            height: 220,
-                            movable: true,
-                            resizable: true,
-                            duration: 2000,
-                        });
                     },
                 });
             });

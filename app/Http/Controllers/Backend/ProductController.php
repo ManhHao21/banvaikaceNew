@@ -50,7 +50,6 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
-        dd($request->all());
         if ($this->ProductServices->created($request)) {
             return redirect()->route('admin.product.index')->with('success', 'Tạo bản ghi thành công');
 

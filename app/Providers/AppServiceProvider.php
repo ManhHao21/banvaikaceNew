@@ -42,7 +42,8 @@ class AppServiceProvider extends ServiceProvider
 
         "App\Repositories\Interface\DistrictRepositoryInterface" => "App\Repositories\DistrictRepository",
         "App\Repositories\Interface\AdminRepositoryInterface" => "App\Repositories\AdminRepository",
-        "App\Repositories\Interface\ProvinceRepositoryInterface" => "App\Repositories\ProvinceRepository",
+        "App\Repositories\Interface\ImageColorProductRepositoryInterface" => "App\Repositories\ImageColorProductRepository",
+        "App\Repositories\Interface\RepositoryInterface" => "App\Repositories\Repository",
         "App\Repositories\Interface\WardRepositoryInterface" => "App\Repositories\WardRepository"
     ];
     /**
