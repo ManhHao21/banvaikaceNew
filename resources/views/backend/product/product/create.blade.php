@@ -4,14 +4,9 @@
 @endsection
 @section('style')
     <link rel="stylesheet" href="{{ asset('backend') }}/css/custom.css">
-    <link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet">
-    <script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
+
     <link href="{{ asset('backend') }}/css/plugins/select2/select2.min.css" rel="stylesheet">
     <script src="{{ asset('ckeditor/ckeditor.js') }}"></script>
-    <link href="{{ asset('backend') }}/css/plugins/switchery/switchery.css" rel="stylesheet">
-    <link href="{{ asset('backend') }}/css/index.css" rel="stylesheet">
-    <link rel="stylesheet" href="{{ asset('backend') }}/css/custom.css">
-    <link rel="stylesheet" href="{{ asset('backend') }}/css/tag.css">
 @endsection
 @section('content')
     @include('backend.components.title', [
@@ -34,12 +29,9 @@
                     <div class="ibox-content">
                         <div class="table-responsive">
                             @php
-                                $url =
-                                    $config['method'] == 'create'
-                                        ? route('admin.product.store')
-                                        : route('admin.product.update', $product->id);
+                                $url = $config['method'] == 'create' ? route('admin.product.store') : route('admin.product.update', $product->id);
                             @endphp
-                            <form action="{{ $url }}" method="post" class="box" enctype="multipart/form-data">
+                            <form action="{{ $url }}" method="post" class="box">
                                 @csrf
                                 @php
                                     if ($config['method'] == 'create') {
@@ -87,7 +79,7 @@
 
                                                         </div>
                                                         <div class="col-lg-12">
-                                                            <div class="form-row" style="margin-bottom: 10px;">
+                                                            <div class="form-row">
                                                                 <label for="" class="control-label text-left">Danh
                                                                     mục sản phẩm
                                                                 </label>
@@ -99,73 +91,93 @@
                                                                 </select>
                                                             </div>
                                                         </div>
-                                                        <div class="form-row col-lg-6">
-                                                            <label for="" class="control-label text-left">SKU
-                                                                <span class="text-danger">(*)</span></label>
-                                                            <input type="text" name="sku"
-                                                                value="{{ old('sku', $product->sku ?? '') }}"
-                                                                class="form-control">
+                                                        <div class="col-lg-12">
+                                                            <div class="form-row col-lg-6">
+                                                                <label for="" class="control-label text-left">SKU
+                                                                    <span class="text-danger">(*)</span></label>
+                                                                <input type="text" name="sku"
+                                                                    value="{{ old('sku', $product->sku ?? '') }}"
+                                                                    class="form-control">
+                                                            </div>
+                                                            <div class="form-row col-lg-6">
+                                                                <label for="" class="control-label text-left">Giá
+                                                                    tiền
+                                                                    <span class="text-danger">(*)</span></label>
+                                                                <input type="text" name="price"
+                                                                    value="{{ old('price', $product->price ?? '') }}"
+                                                                    class="form-control">
+                                                            </div>
+                                                            <div class="form-row col-lg-12">
+                                                                <label for="" class="control-label text-left">Khối
+                                                                    lượng sản phẩm
+                                                                    <span class="text-danger">(*)</span></label>
+                                                                <input type="text" name="gms"
+                                                                    value="{{ old('gms', $product->gms ?? '') }}"
+                                                                    class="form-control">
+                                                            </div>
                                                         </div>
-                                                        <div class="form-row col-lg-6">
-                                                            <label for="" class="control-label text-left">Khối
-                                                                lượng sản phẩm
-                                                                <span class="text-danger">(*)</span></label>
-                                                            <input type="text" name="gms"
-                                                                value="{{ old('gms', $product->gms ?? '') }}"
-                                                                class="form-control">
+                                                        <div class="col-lg-12">
+                                                            <div class="form-row">
+                                                                <label for=""
+                                                                    class="control-label text-left">description
+                                                                    <span class="text-danger">(*)</span></label>
+                                                                <textarea type="text" id="meta_description" name="description" value="" class="form-control" placeholder=""
+                                                                    autocomplete="off">{{ old('description', $product->description ?? '') }}</textarea>
+                                                            </div>
                                                         </div>
-                                                        <div class="form-row col-lg-6">
-                                                            <label for="" class="control-label text-left">Giá
-                                                                tiền
-                                                                <span class="text-danger">(*)</span></label>
-                                                            <input type="text" name="price"
-                                                                value="{{ old('price', $product->price ?? '') }}"
-                                                                class="form-control">
+                                                        <div class="col-lg-8">
+                                                            <div class="form-row">
+                                                                <label for="" class="control-label text-left">Chất
+                                                                    liệu</label>
+                                                                <select name="material_id[]" multiple="multiple"
+                                                                    class="form-control js-select2-multi">
+                                                                    @if (isset($materials))
+                                                                        @foreach ($materials as $material)
+                                                                            <option value="{{ $material->id }}">
+                                                                                {{ $material->name }}</option>
+                                                                        @endforeach
+                                                                    @endif
+                                                                </select>
+                                                            </div>
                                                         </div>
-                                                        <div class="form-row col-lg-6">
-                                                            <label for="" class="control-label text-left">giá giảm
+                                                        <div class="form-row col-lg-4">
+                                                            <label for="" class="control-label text-left">Seller
                                                                 <span class="text-danger">(*)</span></label>
                                                             <input type="text" name="seller"
                                                                 value="{{ old('seller', $product->seller ?? '') }}"
                                                                 class="form-control">
                                                         </div>
                                                         <div class="col-lg-12">
-                                                            <div class="upload__box">
-                                                                <div class="upload__btn-box">
-                                                                    <label class="btn-primary btn">
-                                                                        <p>Upload images</p>
-                                                                        <input type="file" multiple=""
-                                                                            data-max_length="20" name="image[]"
-                                                                            class="upload__inputfile">
-                                                                    </label>
+                                                            <div class="file-upload">
+                                                                <button class="file-upload-btn" type="button"
+                                                                    onclick="$('.file-upload-input').trigger('click')">Add
+                                                                    Image</button>
+                                                                <div class="image-upload-wrap">
+                                                                    <input class="file-upload-input" name="image"
+                                                                        type='file' onchange="readURL(this);" />
+                                                                    <div class="drag-text">
+                                                                        <h3>Drag and drop a file or select add Image
+                                                                        </h3>
+                                                                    </div>
                                                                 </div>
-                                                                <div class="upload__img-wrap"></div>
+                                                                <div class="file-upload-content">
+                                                                </div>
                                                             </div>
                                                         </div>
                                                         <div class="col-lg-12">
-                                                            <div class="form-row">
-                                                                <div class="form-check form-switch switch-check">
-                                                                    <label class="switch">
-                                                                        <input type="checkbox" class="status"
-                                                                            name="is_hot" value="1">
-                                                                        <span class="slider round"></span>
-                                                                        <meta name="csrf-token"
-                                                                            content="{{ csrf_token() }}" />
-                                                                    </label>
-                                                                    <label class="form-check-label"
-                                                                        for="flexSwitchCheckDefault">Sản phẩm hot</label>
+                                                            <div class="file-upload">
+                                                                <button class="file-upload-btn" type="button"
+                                                                    onclick="$('.file-upload-input').trigger('click')">Add
+                                                                    Image</button>
+                                                                <div class="image-upload-wrap">
+                                                                    <input class="file-upload-input" name="image"
+                                                                        type='file' onchange="readURL(this);" />
+                                                                    <div class="drag-text">
+                                                                        <h3>Drag and drop a file or select add Image
+                                                                        </h3>
+                                                                    </div>
                                                                 </div>
-                                                                <div class="form-check form-switch switch-check">
-                                                                    <label class="switch">
-                                                                        <input type="checkbox" class="status js-switch"
-                                                                            name="top_view" value="1">
-                                                                        <span class="slider round"></span>
-                                                                        <meta name="csrf-token"
-                                                                            content="{{ csrf_token() }}" />
-                                                                    </label>
-                                                                    <label class="form-check-label"
-                                                                        for="flexSwitchCheckDefault">Sản phẩm nổi
-                                                                        bật</label>
+                                                                <div class="file-upload-content">
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -174,72 +186,18 @@
                                             </div>
                                         </div>
                                         <hr>
-
-                                    </div>
-                                </div>
-                                <div class="wrapper wrapper-content animated fadeInRight">
-                                    <div class="row pl-2">
-                                        <div class="col-lg-4">
-                                            <div class="panel-head">
-                                                <div class="panel-title">Thông tin bổ sung cho sản phẩm</div>
-                                                <div class="panel-description">
-                                                    <p>Nhập thông tin bổ sung cho sản phẩm</p>
-
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-lg-8">
-                                            <div class="ibox">
-                                                <div class="ibox-content">
-                                                    <div class="row mb15">
-                                                        <div class="col-lg-12">
-                                                            <div class="form-row">
-                                                                <label for=""
-                                                                    class="control-label text-left">description
-                                                                    <span class="text-danger">(*)</span></label>
-                                                                <textarea type="text" id="meta_description" name="description" value="" class="form-control"
-                                                                    placeholder="" autocomplete="off">{{ old('description', $product->description ?? '') }}</textarea>
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-md-12 mt-3">
-                                                            <div class="panel panel-primary">
-                                                                <div class="panel-heading">
-                                                                    <h3>Image Upload</h3>
-                                                                </div>
-                                                                <div class="panel-body">
-                                                                    <div class="form-group">
-                                                                        <label for="images">Images</label>
-                                                                        <input type="file" name="images_color[]"
-                                                                            id="images" multiple class="form-control"
-                                                                            required>
-                                                                    </div>
-                                                                    <div class="form-group">
-                                                                        <div id="image_preview" style="width:100%;">
-
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
+                                        <div class="text-right mb15">
+                                            <button class="btn btn-primary" type="submit">Lưu
+                                                lại</button>
                                         </div>
                                     </div>
-                                    <hr>
-                                </div>
-                                <div class="text-right mb15">
-                                    <button class="btn btn-primary" type="submit">Lưu
-                                        lại</button>
                                 </div>
                             </form>
                         </div>
-
                     </div>
                 </div>
             </div>
         </div>
-    </div>
     </div>
 @endsection
 @section('script')
@@ -247,9 +205,6 @@
     <script src="{{ asset('backend') }}/libary/scripts.js"></script>
     <script src="{{ asset('backend') }}/libary/imagemulti.js"></script>
     <script src="{{ asset('backend') }}/libary/selectM.js"></script>
-    <script src="{{ asset('backend') }}/libary/tag.js"></script>
-    <script src="{{ asset('backend') }}/libary/image-color.js"></script>
-    <script src="{{ asset('backend') }}/js/plugins/switchery/switchery.js"></script>
     <script>
         CKEDITOR.replace('meta_description');
     </script>

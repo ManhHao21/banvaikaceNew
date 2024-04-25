@@ -62,16 +62,15 @@
                                                     </td>
                                                     <td>
                                                         <div class="d-flex align-items-center list-action action">
-                                                            <a class="badge-info mr-2 btn p-2 d-flex btn-action"
-                                                                data-toggle="tooltip" style=" align-items:center;"
+                                                            <a class="badge badge-info mr-2" data-toggle="tooltip"
                                                                 data-placement="top" title=""
                                                                 data-original-title="View"
-                                                                href=""><i
+                                                                href="{{ route('admin.postcategory.edit', $item->id) }}"><i
                                                                     class="fa fa-pencil" aria-hidden="true"></i></a>
-                                                            <a class="badge-danger d-flex btn p-2 btn-action" data-toggle="tooltip"
-                                                                style=" align-items:center; border-radius:none !important;" data-placement="top"
-                                                                title="" data-original-title="View"
-                                                                href=""><i
+                                                            <a class="badge badge-danger mr-2" data-toggle="tooltip"
+                                                                data-placement="top" title=""
+                                                                data-original-title="View"
+                                                                href="{{ route('admin.postcategory.show', $item->id) }}"><i
                                                                     class="fa fa-trash" aria-hidden="true"></i></a>
 
                                                         </div>
