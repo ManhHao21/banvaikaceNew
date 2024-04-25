@@ -17,4 +17,5 @@
 <script src="{{ asset('backend') }}/js/demo/sparkline-demo.js"></script>
 <script src="{{ asset('backend') }}/js/plugins/chartJs/Chart.min.js"></script>
 <script src="{{ asset('backend') }}/js/plugins/toastr/toastr.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 @yield('script')

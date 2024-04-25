@@ -1,4 +1,4 @@
-<form action="{{ route('admin.catelogue.index') }}" method="get">
+<form action="{{ route('admin.postcategory.index') }}" method="get">
     <div class="filter-wrapper row">
         <div class="uk-flex uk-flex-middle uk-flex-space-between">
             <div class="perpage">
@@ -42,7 +42,7 @@
                     </div>
                     <a href="{{ route('admin.postcategory.create') }}" class="btn btn-danger"><i
                             class="fa fa-plus mr5"></i>Thêm
-                        mới nhóm người dùng</a>
+                        danh mục</a>
                 </div>
             </div>
         </div>

@@ -104,7 +104,7 @@
 
                                                     <td>
                                                         <div class="d-flex align-items-center list-action action">
-                                                            <a class="badge badge-info mr-2" data-toggle="tooltip"
+                                                            <a class="badge-info mr-2 btn p-2 d-flex btn-action data-toggle="tooltip"
                                                                 data-placement="top" title=""
                                                                 data-original-title="View"
                                                                 href="{{ route('admin.quantri.edit', $item->id) }}"><i
