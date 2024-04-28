@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 use App\Services\Interface\PostServiceInterface;
 
-class PostService implements PostServiceInterface
+class PostService  extends BaseService
 {
     protected $PostRepository;
 
@@ -117,13 +117,7 @@ class PostService implements PostServiceInterface
             return false;
         }
     }
-    private function convertImage($image = '')
-    {
-        if ($image) {
-            $path = $image->store('post/image');
-            return $path;
-        }
-    }
+   
     private function paginateSelect()
     {
         return [

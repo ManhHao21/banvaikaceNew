@@ -2,12 +2,11 @@
 namespace App\Repositories;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Storage;
 use App\Repositories\Interface\BaseRepositoryInterface;
-
 
 class BaseRepository implements BaseRepositoryInterface
 {
-
     protected $model;
     public function __construct(Model $model)
     {
@@ -21,21 +20,14 @@ class BaseRepository implements BaseRepositoryInterface
     {
         return $this->model->all();
     }
-    public function pagination(
-        array $column = ['*'],
-        array $condition = [],
-        array $join = [],
-        array $extend = [],
-        $perPage = 20,
-        array $relations = [],
-        array $order = []
-    ) {
+    public function pagination(array $column = ['*'], array $condition = [], array $join = [], array $extend = [], $perPage = 20, array $relations = [], array $order = [])
+    {
         $query = $this->model->select($column)->where(function ($query) use ($condition) {
-            if (isset($condition["keyword"]) && !empty($condition['keyword'])) {
+            if (isset ($condition['keyword']) && !empty ($condition['keyword'])) {
                 $query->where('name', 'like', '%' . $condition['keyword'] . '%');
             }
         });
-        if (isset($condition["publish"]) && $condition['publish'] != 0) {
+        if (isset($condition['publish']) && $condition['publish'] != 0) {
             $query->where('publish', '=', $condition['publish']);
         }
         if (isset($relations) && !empty($relations)) {
@@ -47,7 +39,10 @@ class BaseRepository implements BaseRepositoryInterface
             $query->join(...$join);
         }
         $query->orderBy('id', $order);
-        return $query->paginate($perPage)->withQueryString()->withPath(env('APP_URL') . $extend['path']);
+        return $query
+            ->paginate($perPage)
+            ->withQueryString()
+            ->withPath(env('APP_URL') . $extend['path']);
     }
     public function create(array $dataRequest = [])
     {
@@ -64,21 +59,40 @@ class BaseRepository implements BaseRepositoryInterface
     {
         return $this->model->whereIn($whereInField, $whereIn)->update($payload);
     }
-    public function deleted($id)
+    public function deleted($id, $file = false)
     {
         $admin = $this->model->find($id);
         if ($admin) {
+            if ($file) {
+                dd($admin->image);
+                $imagePaths = json_decode($admin->image, true);
+                if (count($imagePaths) > 1) {
+                    foreach ($imagePaths as $key => $value) {
+                        if (Storage::exists($value)) {
+                            Storage::delete($value);
+                        }
+                    }
+                } else {
+                    Storage::delete($admin->image);
+                }
+            }
             return $admin->delete();
         }
         return false;
     }
+
 
     public function findById(int $modelId, array $column = ['*'], array $relation = [])
     {
         return $this->model->select($column)->with($relation)->findOrFail($modelId);
     }
 
-    public function getFirstById($id, array $column = ['*']) {
-        return $this ->model->select($column)-> where('id', $id)->first();
+    public function getFirstById($id, array $column = ['*'])
+    {
+        return $this->model->select($column)->where('id', $id)->first();
+    }
+    public function insert(array $attributes)
+    {
+        return $this->model->insert($attributes);
     }
 }

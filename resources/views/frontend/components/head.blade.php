@@ -20,5 +20,6 @@
     <link rel="stylesheet" href="{{ asset('Frontend') }}/css/owl.carousel.min.css" type="text/css">
     <link rel="stylesheet" href="{{ asset('Frontend') }}/css/slicknav.min.css" type="text/css">
     <link rel="stylesheet" href="{{ asset('Frontend') }}/css/style.css" type="text/css">
+    <link rel="stylesheet" href="{{ asset('Frontend') }}/css/toastr.css" type="text/css">
     @yield('style')
 </head>

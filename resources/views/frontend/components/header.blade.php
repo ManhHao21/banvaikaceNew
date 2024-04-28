@@ -37,8 +37,8 @@
                         <li><a href="#"><span class="icon_heart_alt"></span>
                             <div class="tip">2</div>
                         </a></li>
-                        <li><a href="#"><span class="icon_bag_alt"></span>
-                            <div class="tip">2</div>
+                        <li><a href="/cart-order"><span class="icon_bag_alt"></span>
+                            <div class="tip">{{$quantity ?? ''}}</div>
                         </a></li>
                     </ul>
                 </div>

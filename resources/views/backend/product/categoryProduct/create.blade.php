@@ -35,7 +35,7 @@
                                         ? route('admin.category.store')
                                         : route('admin.category.update', $category->id);
                             @endphp
-                            <form action="{{ $url }}" method="POST" class="box">
+                            <form action="{{ $url }}" method="POST" class="box" enctype="multipart/form-data">
                                 @csrf
                                 @php
                                     if ($config['method'] == 'create') {
@@ -78,8 +78,33 @@
                                                                     <span class="text-danger">(*)</span></label>
                                                                 <input type="text" name="slug"
                                                                     value="{{ old('slug', $category->slug ?? '') }}"
-                                                                    class="form-control slug" placeholder="Nhập đường dẫn..."
-                                                                    autocomplete="off">
+                                                                    class="form-control slug"
+                                                                    placeholder="Nhập đường dẫn..." autocomplete="off">
+                                                            </div>
+                                                            <div class="col-lg-12">
+                                                                <div class="upload__box">
+                                                                    <div class="upload__btn-box">
+                                                                        <label class="btn-primary btn">
+                                                                            <p>Upload images</p>
+                                                                            <input type="file" data-max_length="20"
+                                                                                name="image" class="upload__inputfile">
+                                                                        </label>
+                                                                    </div>
+                                                                    <div class="upload__img-wrap">
+                                                                        @if (isset($category->image))
+                                                                            <div class='upload__img-box'>
+                                                                                <div style='background-image: url({{ asset("storage/$category->image") }})'
+                                                                                    @if (!empty($category->image)) data-number='' data-file='" + f.name + "' @endif
+                                                                                    class='img-bg'>
+                                                                                    <div class='upload__img-close'></div>
+                                                                                </div>
+                                                                            </div>
+                                                                        @endif
+
+                                                                    </div>
+
+
+                                                                </div>
                                                             </div>
                                                             <div class="form-row" style="margin-top: 10px">
                                                                 <label for="cate-name" class="control-label text-left">Danh
@@ -90,7 +115,7 @@
                                                                     class="form-control districts setupSelect2 location"
                                                                     data-target="wards">
                                                                     <option value="0">Chọn danh mục</option>
-                                                                    {{ getCategories($categories, old('parent_id')) }}
+                                                                    {{ getCategories($categories, old('parent_id', $category->id ?? '')) }}
                                                                 </select>
                                                             </div>
                                                         </div>
@@ -117,4 +142,5 @@
 @endsection
 @section('script')
     <script src="{{ asset('backend') }}/libary/scripts.js"></script>
+    <script src="{{ asset('backend') }}/libary/imagemulti.js"></script>
 @endsection

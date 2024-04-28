@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Hash;
 use App\Services\Interface\MaterialServiceInterface;
 use App\Repositories\MaterialRepository;
 
-class MaterialService implements MaterialServiceInterface
+class MaterialService extends BaseService
 {
     protected $MaterialRepository;
 
@@ -108,12 +108,7 @@ class MaterialService implements MaterialServiceInterface
             return false;
         }
     }
-    private function convertBirthday($birthday = '')
-    {
-        $dateCarbon = Carbon::createFromFormat('Y-m-d', $birthday);
-        $birthday = $dateCarbon->format('Y-m-d H:i:s');
-        return $birthday;
-    }
+    
     private function paginateSelect()
     {
         return [

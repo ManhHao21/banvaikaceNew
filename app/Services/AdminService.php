@@ -1,14 +1,12 @@
 <?php
 namespace App\Services;
 
-use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Hash;
-use App\Services\Interface\AdminServiceInterface;
 use App\Repositories\AdminRepository;
 
-class AdminService implements AdminServiceInterface
+class AdminService extends BaseService
 {
     protected $AdminRepository;
 
@@ -114,12 +112,6 @@ class AdminService implements AdminServiceInterface
             Log::error($e->getMessage());
             return false;
         }
-    }
-    private function convertBirthday($birthday = '')
-    {
-        $dateCarbon = Carbon::createFromFormat('Y-m-d', $birthday);
-        $birthday = $dateCarbon->format('Y-m-d H:i:s');
-        return $birthday;
     }
     private function paginateSelect()
     {

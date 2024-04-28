@@ -53,7 +53,7 @@
                                                     <td>{{ $item->name }}</td>
                                                     <td>{!! $item->sku !!}</td>
                                                     <td>{!! $item->price !!}</td>
-                                                    <td>{{ $item->PostCategory->name ?? '' }}</td>
+                                                    <td>{{ $item->category->name ?? '' }}</td>
                                                     @php
                                                         $images = json_decode($item->image);
                                                     @endphp

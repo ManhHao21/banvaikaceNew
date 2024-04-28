@@ -34,7 +34,7 @@
                                         <tr role="row">
                                             <th><input type="checkbox" class="checkAll" name="" id=""></th>
                                             <th>Tên danh mục</th>
-                                            <th>Danh mục cha</th>
+                                            <th>Hình ảnh</th>
                                             <th>Tình trạng</th>
                                             <th>Hành động</th>
                                         </tr>
@@ -46,15 +46,16 @@
                                                     <td class="sorting_1"><input type="checkbox" name=""
                                                             value="{{ $item->id }}" class="checkItem input-check"
                                                             id=""></td>
-                                                    <td>{{ $item->Parent_id->first() ? '--|' : '' }}{{ $item->name }}
+                                                    <td>{{ $item->Parent_id->first() ? $item->Parent_id->first()->name : '' }} {{ $item->Parent_id->first() ? '>' : '' }} {{ $item->name }}
                                                     </td>
-                                                    <td>{{ $item->Parent_id->first() ? $item->Parent_id->first()->name : '' }}
-                                                    </td>
+                                                    <td><img src="{{ asset('storage') }}/{{ $item->image }}" alt=""
+                                                            width="90px" height="90px" srcset=""></td>
+                                                   
                                                     <td>
                                                         <label class="switch">
                                                             <input type="checkbox"
                                                                 class="status js-switch-{{ $item->id }}"
-                                                                data-field="publish" data-model="PostCategory"
+                                                                data-field="publish" data-model="ProductCategory"
                                                                 {{ $item->publish == 1 ? 'checked' : '' }}
                                                                 data-id="{{ $item->id }}">
                                                             <span class="slider round"></span>
@@ -68,8 +69,8 @@
                                                                 data-original-title="View"
                                                                 href="{{ route('admin.category.edit', $item->id) }}"><i
                                                                     class="fa fa-pencil" aria-hidden="true"></i></a>
-                                                            <a class="badge-danger d-flex btn p-2 btn-action" data-toggle="tooltip"
-                                                                data-placement="top" title=""
+                                                            <a class="badge-danger d-flex btn p-2 btn-action"
+                                                                data-toggle="tooltip" data-placement="top" title=""
                                                                 data-original-title="View"
                                                                 href="{{ route('admin.category.show', $item->id) }}"><i
                                                                     class="fa fa-trash" aria-hidden="true"></i></a>

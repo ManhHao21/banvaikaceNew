@@ -42,7 +42,7 @@ class ProductController extends Controller
         $config['method'] = 'create';
         $ProductCategory = $this->ProductRepository->getAll();
         $materials = $this->materialRepository->getAll();
-        return view('backend.product.product.create', compact('config', 'ProductCategory', 'categories', 'materials'));
+            return view('backend.product.product.create', compact('config', 'ProductCategory', 'categories', 'materials'));
     }
 
     /**
@@ -63,6 +63,7 @@ class ProductController extends Controller
         $config['seo'] = config('apps.Product.update');
         $config['method'] = 'edit';
         $product = $this->ProductRepository->findById($id);
+        dd($product);
         $categories = $this->ProductCategoryRepository->getAll();
         $materials = $this->materialRepository->getAll();
 

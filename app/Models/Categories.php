@@ -17,7 +17,8 @@ class Categories extends Model
         'meta_title',
         'meta_description',
         'meta_keyword',
-        'publish'
+        'publish',
+        'image'
     ];
 
     public function Parent_id()
@@ -25,8 +26,13 @@ class Categories extends Model
         return $this->hasMany(Categories::class, 'parent_id', 'id');
     }
 
+    public function children()
+    {
+        return $this->belongsTo(Categories::class, 'parent_id', 'id');
+    }
+
     public function Product()
     {
-        return $this->belongsTo(Product::class, 'categories_id', 'id');
+        return $this->hasMany(Product::class, 'categories_id', 'id');
     }
 }

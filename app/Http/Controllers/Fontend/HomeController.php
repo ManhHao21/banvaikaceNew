@@ -15,12 +15,7 @@ class HomeController extends Controller
         $menus = Categories::where('parent_id', '=', 0)->get();
 
         $productNew = Product::where('publish', '=', 1)->get();
-        // $productHot = [
-        //     ''
-        // ]
 
         return view("frontend.index", compact("menus", 'productNew'));
     }
-
-
 }

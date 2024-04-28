@@ -31,7 +31,7 @@ class Product extends Model
 
     public function category()
     {
-        return $this->hasOne(Categories::class, 'categories_id', 'id');
+        return $this->belongsTo(Categories::class, 'categories_id', 'id');
     }
     public function material()
     {

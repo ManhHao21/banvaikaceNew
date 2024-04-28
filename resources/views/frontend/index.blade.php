@@ -5,9 +5,6 @@
 
 <body>
     <!-- Page Preloder -->
-    <div id="preloder">
-        <div class="loader"></div>
-    </div>
 
     <!-- Offcanvas Menu Begin -->
     @include('frontend.components.menu-top')

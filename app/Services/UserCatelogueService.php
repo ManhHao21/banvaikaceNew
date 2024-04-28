@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Hash;
 use App\Services\Interface\UserCatelogueServiceInterface;
 
-class UserCatelogueService implements UserCatelogueServiceInterface
+class UserCatelogueService  extends BaseService
 {
     protected $UserCatelogueRepository;
 
@@ -109,12 +109,7 @@ class UserCatelogueService implements UserCatelogueServiceInterface
             return false;
         }
     }
-    private function convertBirthday($birthday = '')
-    {
-        $dateCarbon = Carbon::createFromFormat('Y-m-d', $birthday);
-        $birthday = $dateCarbon->format('Y-m-d H:i:s');
-        return $birthday;
-    }
+    
     private function paginateSelect()
     {
         return [

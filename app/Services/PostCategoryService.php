@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use App\Services\Interface\PostCategoryServiceInterface;
 
-class PostCategoryService implements PostCategoryServiceInterface
+class PostCategoryService  extends BaseService
 {
     protected $PostCategoryInterface;
 
@@ -109,12 +109,7 @@ class PostCategoryService implements PostCategoryServiceInterface
             return false;
         }
     }
-    private function convertBirthday($birthday = '')
-    {
-        $dateCarbon = Carbon::createFromFormat('Y-m-d', $birthday);
-        $birthday = $dateCarbon->format('Y-m-d H:i:s');
-        return $birthday;
-    }
+   
     private function paginateSelect()
     {
         return [

@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use session;
 use App\Models\Cart;
+use App\Models\Product;
 use App\Models\Categories;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\Auth;
@@ -12,45 +13,32 @@ use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
 {
-
     protected $serviceBinding = [
-        "App\Repositories\Interface\UserRepositoryInterface" => "App\Repositories\UserRepository",
-        "App\Repositories\Interface\UserCatelogueRepositoryInterface" => "App\Repositories\UserCatelogueRepository",
+        'App\Repositories\Interface\UserRepositoryInterface' => 'App\Repositories\UserRepository',
+        'App\Repositories\Interface\UserCatelogueRepositoryInterface' => 'App\Repositories\UserCatelogueRepository',
 
-        "App\Services\Interface\UserServiceInterface" => "App\Services\UserService",
-        "App\Services\Interface\UserCatelogueServiceInterface" => "App\Services\UserCatelogueService",
+        'App\Repositories\Interface\PostCategoryRepositoryInterface' => 'App\Repositories\PostCategoryRepository',
 
-        "App\Repositories\Interface\PostCategoryRepositoryInterface" => "App\Repositories\PostCategoryRepository",
-        "App\Services\Interface\PostCategoryServiceInterface" => "App\Services\PostCategoryService",
+        'App\Repositories\Interface\PostRepositoryInterface' => 'App\Repositories\PostRepository',
 
-        "App\Repositories\Interface\PostRepositoryInterface" => "App\Repositories\PostRepository",
-        "App\Services\Interface\PostServiceInterface" => "App\Services\PostService",
+        'App\Repositories\Interface\MaterialRepositoryInterface' => 'App\Repositories\MaterialRepository',
 
-        "App\Repositories\Interface\MaterialRepositoryInterface" => "App\Repositories\MaterialRepository",
-        "App\Services\Interface\MaterialServiceInterface" => "App\Services\MaterialService",
+        'App\Repositories\Interface\ProductCategoryRepositoryInterface' => 'App\Repositories\ProductCategoryRepository',
 
-        "App\Repositories\Interface\ProductCategoryRepositoryInterface" => "App\Repositories\ProductCategoryRepository",
-        "App\Services\Interface\ProductCategoryServiceInterface" => "App\Services\ProductCategoryService",
+        'App\Repositories\Interface\ProductRepositoryInterface' => 'App\Repositories\ProductRepository',
 
-        "App\Repositories\Interface\ProductRepositoryInterface" => "App\Repositories\ProductRepository",
-        "App\Services\Interface\ProductServiceInterface" => "App\Services\ProductService",
+        'App\Repositories\Interface\SinglePageRepositoryInterface' => 'App\Repositories\SinglePageRepository',
+        'App\Repositories\Interface\SystemRepositoryInterface' => 'App\Repositories\SystemRepository',
 
-        "App\Repositories\Interface\SinglePageRepositoryInterface" => "App\Repositories\SinglePageRepository",
-        "App\Services\Interface\SinglePageServiceInterface" => "App\Services\SinglePageService",
-        "App\Repositories\Interface\SystemRepositoryInterface" => "App\Repositories\SystemRepository",
-        "App\Services\Interface\SystemServiceInterface" => "App\Services\SystemService",
-
-        "App\Repositories\Interface\DistrictRepositoryInterface" => "App\Repositories\DistrictRepository",
-        "App\Repositories\Interface\AdminRepositoryInterface" => "App\Repositories\AdminRepository",
-        "App\Repositories\Interface\ImageColorProductRepositoryInterface" => "App\Repositories\ImageColorProductRepository",
-        "App\Repositories\Interface\RepositoryInterface" => "App\Repositories\Repository",
-        "App\Repositories\Interface\WardRepositoryInterface" => "App\Repositories\WardRepository"
+        'App\Repositories\Interface\DistrictRepositoryInterface' => 'App\Repositories\DistrictRepository',
+        'App\Repositories\Interface\AdminRepositoryInterface' => 'App\Repositories\AdminRepository',
+        'App\Repositories\Interface\ImageColorProductRepositoryInterface' => 'App\Repositories\ImageColorProductRepository',
+        'App\Repositories\Interface\RepositoryInterface' => 'App\Repositories\Repository',
+        'App\Repositories\Interface\WardRepositoryInterface' => 'App\Repositories\WardRepository',
     ];
     /**
      * Register any application services.
      */
-
-
 
     public function register(): void
     {
@@ -59,7 +47,6 @@ class AppServiceProvider extends ServiceProvider
         }
     }
 
-
     /**
      * Bootstrap any application services.
      */
@@ -67,20 +54,28 @@ class AppServiceProvider extends ServiceProvider
     {
         Paginator::useBootstrapFour();
         View::composer('*', function ($view) {
-            $name = "";
+            $name = '';
             if (Auth::check()) {
                 $name = Auth::user()->name;
             }
-            $menus = Categories::where('parent_id', '=', 0)->get();
+            $menus = Categories::where([
+                ['parent_id', '=', 0],
+                ['publish', '=', 1]
+            ])->get();
+            $product = Product::where([
+                ['publish', '=', 1]
+            ])->get();
             $view->with('menus', $menus);
+            $view->with('product', $product);
             $view->with('name', $name);
             $sum = 0;
 
-            $quantitys = session()->get("carts", []);
-            foreach ($quantitys as $key => $quantity) {
+            $cart = session()->get('carts', []);
+            foreach ($cart as $key => $quantity) {
                 $sum += $quantity['quantity'];
             }
             $view->with('quantity', $sum);
+            $view->with('cart', $cart);
         });
     }
 }

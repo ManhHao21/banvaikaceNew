@@ -91,7 +91,6 @@ class CategoriesController extends Controller
         $config['method'] = 'edit';
         $category = $this->ProductCategoryRepository->findById($id);
         $categories = $this->ProductCategoryRepository->getAll();
-
         return view('backend.product.categoryProduct.create', compact('config', 'categories', 'category'));
     }
 

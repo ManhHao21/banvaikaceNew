@@ -5,10 +5,9 @@ use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Hash;
-use App\Services\Interface\UserServiceInterface;
 use App\Repositories\UserRepository;
 
-class UserService implements UserServiceInterface
+class UserService  extends BaseService
 {
     protected $userRepository;
 
@@ -114,12 +113,6 @@ class UserService implements UserServiceInterface
             Log::error($e->getMessage());
             return false;
         }
-    }
-    private function convertBirthday($birthday = '')
-    {
-        $dateCarbon = Carbon::createFromFormat('Y-m-d', $birthday);
-        $birthday = $dateCarbon->format('Y-m-d H:i:s');
-        return $birthday;
     }
     private function paginateSelect()
     {

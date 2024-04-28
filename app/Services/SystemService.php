@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Hash;
 use App\Services\Interface\SystemServiceInterface;
 use App\Repositories\SystemRepository;
 
-class SystemService implements SystemServiceInterface
+class SystemService  extends BaseService
 {
     protected $SystemRepository;
 
@@ -127,17 +127,7 @@ class SystemService implements SystemServiceInterface
             return false;
         }
     }
-    public function convertImage($images = '')
-    {
-        $path = $images->store('system/image');
-        return $path;
-    }
-    private function convertBirthday($birthday = '')
-    {
-        $dateCarbon = Carbon::createFromFormat('Y-m-d', $birthday);
-        $birthday = $dateCarbon->format('Y-m-d H:i:s');
-        return $birthday;
-    }
+   
     private function paginateSelect()
     {
         return [

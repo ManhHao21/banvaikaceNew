@@ -1,4 +1,4 @@
-<form action="{{ route('admin.users.index') }}" method="get">
+<form action="{{ route('admin.category.index') }}" method="get">
     <div class="filter-wrapper row">
         <div class="uk-flex uk-flex-middle uk-flex-space-between">
             <div class="perpage">

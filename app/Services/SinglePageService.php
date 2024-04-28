@@ -8,7 +8,7 @@ use App\Repositories\SinglePageRepository;
 use Illuminate\Support\Facades\Hash;
 use App\Services\Interface\SinglePageServiceInterface;
 
-class SinglePageService implements SinglePageServiceInterface
+class SinglePageService  extends BaseService
 {
     protected $SinglePageRepository;
 
@@ -115,13 +115,7 @@ class SinglePageService implements SinglePageServiceInterface
             return false;
         }
     }
-    private function convertImage($image = '', $path = '')
-    {
-        if ($image) {
-            $path = $image->store($path);
-            return $path;
-        }
-    }
+    
     private function paginateSelect()
     {
         return [

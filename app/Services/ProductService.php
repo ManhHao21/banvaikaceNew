@@ -6,16 +6,19 @@ use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
-use App\Services\Interface\ProductServiceInterface;
 use App\Repositories\ProductRepository;
+use Illuminate\Support\Facades\Session;
+use App\Services\Interface\ProductServiceInterface;
+use App\Repositories\Interface\ImageColorProductRepositoryInterface;
 
-class ProductService implements ProductServiceInterface
+class ProductService extends BaseService
 {
-    protected $ProductRepository;
+    protected $ProductRepository, $imageColorProductRepositoryInterface;
 
-    public function __construct(ProductRepository $ProductRepository)
+    public function __construct(ProductRepository $ProductRepository, ImageColorProductRepositoryInterface $imageColorProductRepositoryInterface)
     {
         $this->ProductRepository = $ProductRepository;
+        $this->imageColorProductRepositoryInterface = $imageColorProductRepositoryInterface;
     }
 
     public function paginate($request)
@@ -23,17 +26,7 @@ class ProductService implements ProductServiceInterface
         $condition['keyword'] = addslashes($request->input('keyword'));
         $perpage = $request->integer('perpage');
         $condition['publish'] = $request->integer('publish');
-        $category = $this->ProductRepository
-            ->pagination(
-                $this->paginateSelect(),
-                $condition,
-                [],
-                ['path' => '/admin/product'],
-                $perpage,
-                [],
-                ['key' => 'desc']
-
-            );
+        $category = $this->ProductRepository->pagination($this->paginateSelect(), $condition, [], ['path' => '/admin/product'], $perpage, [], ['key' => 'desc']);
         return $category;
     }
     public function created($request)
@@ -44,7 +37,7 @@ class ProductService implements ProductServiceInterface
             $images = [];
             if ($request->hasFile('image')) {
                 foreach ($data['image'] as $key => $image) {
-                    $images[] = $this->convertImage($image);
+                    $images[] = $this->convertImage($image, 'product-image');
                 }
             }
             $productData = [
@@ -63,15 +56,16 @@ class ProductService implements ProductServiceInterface
                 'top_view' => $data['top_view'] ?? null,
             ];
             $product = $this->ProductRepository->create($productData);
-            dd($product)
-            if ($request->hasFile('images_color')) {
-                foreach ($data['images_color'] as $key => $image_color) {
-                    $image_color =  DB::table('image_color_product')->insert([
-                        'product_id' => $product->id,
-                        'image_color' =>  $this->convertImage($image_color)
-                    ]);
-                }
-            }
+            // if ($request->hasFile('images_color')) {
+
+            //     foreach ($data['images_color'] as $key => $image_color) {
+
+            //         $data = DB::table('image_color_product')->create([
+            //             'product_id' => $product->id,
+            //             'image_color' => $this->convertImage($image_color)
+            //         ]);
+            //     }
+            // }
             DB::commit();
             return true;
         } catch (\Exception $e) {
@@ -86,10 +80,10 @@ class ProductService implements ProductServiceInterface
         DB::beginTransaction();
 
         try {
-            $payload[$Product['data-field']] = ($Product['value'] == "off" ? 2 : 1);
+            $payload[$Product['data-field']] = $Product['value'] == 'off' ? 2 : 1;
             $Product = $this->ProductRepository->updated($Product['modelId'], $payload);
             DB::commit();
-            return TRUE;
+            return true;
         } catch (\Exception $e) {
             DB::rollBack();
             Log::error($e->getMessage());
@@ -102,7 +96,7 @@ class ProductService implements ProductServiceInterface
             $payload[$Product['data-field']] = $Product['value'];
             $flag = $this->ProductRepository->updateByWhereIn('id', $Product['id'], $payload);
             DB::commit();
-            return TRUE;
+            return true;
         } catch (\Exception $e) {
             DB::rollBack(); // Rollback giao dịch nếu có lỗi
             Log::error($e->getMessage());
@@ -117,7 +111,7 @@ class ProductService implements ProductServiceInterface
             if ($request->hasFile('image')) {
                 $image = $this->convertImage($data['image']);
             }
-            if ($data['material_id'] && $data['material_id'] != NULL) {
+            if ($data['material_id'] && $data['material_id'] != null) {
                 $data['material_id'] = json_encode($data['material_id']);
             }
             $data['user_id'] = Auth::guard('admin')->id();
@@ -135,7 +129,7 @@ class ProductService implements ProductServiceInterface
     {
         DB::beginTransaction();
         try {
-            $Product = $this->ProductRepository->deleted($id);
+            $Product = $this->ProductRepository->deleted($id, true);
             DB::commit();
             return true;
         } catch (\Exception $e) {
@@ -143,11 +137,6 @@ class ProductService implements ProductServiceInterface
             Log::error($e->getMessage());
             return false;
         }
-    }
-    public function convertImage($image)
-    {
-        $path = $image->store('product/image');
-        return $path;
     }
 
     public function convertBirthday($birthday = '')
@@ -158,19 +147,7 @@ class ProductService implements ProductServiceInterface
     }
     private function paginateSelect()
     {
-        return [
-            'id',
-            'name',
-            'sku',
-            'price',
-            'categories_id',
-            'description',
-            'image',
-            'material_id',
-            'user_id',
-            'gms',
-            'publish'
-        ];
+        return ['id', 'name', 'sku', 'price', 'categories_id', 'description', 'image', 'material_id', 'user_id', 'gms', 'publish'];
     }
 
     public function getFirstById($id)
@@ -178,13 +155,42 @@ class ProductService implements ProductServiceInterface
         return $this->ProductRepository->getFirstById($id);
     }
 
-    public function getCartToOrder($request)
+    public function getCartOrder($id)
     {
-        if ($request['action'] == 'cart') {
-        } else if ($request['action'] == 'detail') {
-            $data =  $this->ProductRepository->getFirstById($request['id']);
-            $data['image'] = json_decode($data['image']);
-            return $data;
+        $product = $this->ProductRepository->findById($id, ['id', 'name', 'image', 'price']);
+        if (!$product) {
+            return false;
         }
+        $cart = session()->get('carts', []);
+        if (isset($cart[$id])) {
+            $cart[$id]['quantity']++;
+        } else {
+            $image = json_decode($product->image, true);
+            $cart[$id] = [
+                'id' => $product->id,
+                'name' => $product->name,
+                'image' => isset($image[0]) ? $image[0] : null,
+                'price' => $product->price,
+                'quantity' => 1,
+            ];
+        }
+        return session()->put('carts', $cart);
+    }
+
+    public function updateQuantity($request, $id)
+    {
+        $cart = session()->get('carts', []);
+        if (isset($cart[$id])) {
+            $cart[$id]['quantity'] = $request->quantity;
+        }
+        return session()->put('carts', $cart);
+    }
+
+    public function closeRowCart($id) {
+        $cart = session()->get('carts', []);
+        if (isset($cart[$id])) {
+            unset($cart[$id]);
+        }
+        return session()->put('carts', $cart);
     }
 }

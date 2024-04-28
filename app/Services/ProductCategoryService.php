@@ -2,13 +2,10 @@
 namespace App\Services;
 
 use App\Repositories\Interface\ProductCategoryRepositoryInterface;
-use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Hash;
-use App\Services\Interface\ProductCategoryServiceInterface;
 
-class ProductCategoryService implements ProductCategoryServiceInterface
+class ProductCategoryService extends BaseService
 {
     protected $ProductCategoryInterface;
 
@@ -22,18 +19,7 @@ class ProductCategoryService implements ProductCategoryServiceInterface
         $condition['keyword'] = addslashes($request->input('keyword'));
         $perpage = $request->integer('perpage');
         $condition['publish'] = $request->integer('publish');
-        $category = $this->ProductCategoryInterface
-            ->pagination(
-                $this->paginateSelect()
-                ,
-                $condition,
-                [],
-                ['path' => '/admin/category'],
-                $perpage,
-                [],
-                ['key' => 'desc']
-
-            );
+        $category = $this->ProductCategoryInterface->pagination($this->paginateSelect(), $condition, [], ['path' => '/admin/category'], $perpage, [], ['key' => 'desc']);
         return $category;
     }
     public function created($request)
@@ -42,7 +28,21 @@ class ProductCategoryService implements ProductCategoryServiceInterface
 
         try {
             $data = $request->except(['_token']);
-            $Product = $this->ProductCategoryInterface->create($data);
+            $images = null;
+            if ($request->hasFile('image')) {
+                $images = $this->convertImage($data['image'], 'category-product');
+            }
+            $category = [
+                'name' => $data['name'],
+                'slug' => $data['slug'],
+                'parent_id' => $data['parent_id'],
+                'meta_title' => $data['meta_title'],
+                'meta_description' => $data['meta_description'],
+                'meta_keyword' => $data['meta_keyword'],
+                'image' => $images,
+                'publish' => 1,
+            ];
+            $Product = $this->ProductCategoryInterface->create($category);
             DB::commit();
             return $Product;
         } catch (\Exception $e) {
@@ -56,16 +56,15 @@ class ProductCategoryService implements ProductCategoryServiceInterface
         DB::beginTransaction();
 
         try {
-            $payload[$Product['data-field']] = ($Product['value'] == "off" ? 2 : 1);
+            $payload[$Product['data-field']] = $Product['value'] == 'off' ? 0 : 1;
             $Product = $this->ProductCategoryInterface->updated($Product['modelId'], $payload);
             DB::commit();
-            return TRUE;
+            return true;
         } catch (\Exception $e) {
             DB::rollBack(); // Rollback giao dịch nếu có lỗi
             Log::error($e->getMessage());
             return false;
         }
-
     }
     public function updateStatusAll(array $Product = [])
     {
@@ -73,23 +72,35 @@ class ProductCategoryService implements ProductCategoryServiceInterface
             $payload[$Product['data-field']] = $Product['value'];
             $flag = $this->ProductCategoryInterface->updateByWhereIn('id', $Product['id'], $payload);
             DB::commit();
-            return TRUE;
+            return true;
         } catch (\Exception $e) {
             DB::rollBack(); // Rollback giao dịch nếu có lỗi
             Log::error($e->getMessage());
             return false;
         }
-
-
     }
     public function updated($id, $request)
     {
         DB::beginTransaction();
         try {
             $data = $request->except(['_token']);
-            $Product = $this->ProductCategoryInterface->updated($id, $data);
+            $images = null;
+            if ($request->hasFile('image')) {
+                $images = $this->convertImage($data['image'], 'category-product');
+            }
+            $category = [
+                'name' => $data['name'],
+                'slug' => $data['slug'],
+                'parent_id' => $data['parent_id'],
+                'meta_title' => $data['meta_title'],
+                'meta_description' => $data['meta_description'],
+                'meta_keyword' => $data['meta_keyword'],
+                'image' => $images,
+                'publish' => 1,
+            ];
+            $Product = $this->ProductCategoryInterface->updated($id, $category);
             DB::commit();
-            return true;
+            return  $Product;
         } catch (\Exception $e) {
             DB::rollBack();
             Log::error($e->getMessage());
@@ -101,7 +112,7 @@ class ProductCategoryService implements ProductCategoryServiceInterface
     {
         DB::beginTransaction();
         try {
-            $Product = $this->ProductCategoryInterface->deleted($id);
+            $Product = $this->ProductCategoryInterface->deleted($id, true);
             DB::commit();
             return true;
         } catch (\Exception $e) {
@@ -110,20 +121,9 @@ class ProductCategoryService implements ProductCategoryServiceInterface
             return false;
         }
     }
-    private function convertBirthday($birthday = '')
-    {
-        $dateCarbon = Carbon::createFromFormat('Y-m-d', $birthday);
-        $birthday = $dateCarbon->format('Y-m-d H:i:s');
-        return $birthday;
-    }
     private function paginateSelect()
     {
-        return [
-            'id',
-            'name',
-            'parent_id',
-            'publish',
-        ];
+        return ['id', 'name', 'parent_id', 'publish', 'image'];
     }
 }
 ?>

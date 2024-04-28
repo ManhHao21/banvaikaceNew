@@ -37,7 +37,7 @@
                                 $url =
                                     $config['method'] == 'create'
                                         ? route('admin.product.store')
-                                        : route('admin.product.update', $product->id);
+                                        : route('admin.product.update', $product->id ?? '');
                             @endphp
                             <form action="{{ $url }}" method="post" class="box" enctype="multipart/form-data">
                                 @csrf
@@ -68,8 +68,7 @@
                                                                 <label for="" class="control-label text-left">Tiêu
                                                                     đề sản phẩm
                                                                     <span class="text-danger">(*)</span></label>
-                                                                <input type="text" name="name"
-                                                                    value="{{ old('name', $product->name ?? '') }}"
+                                                                <input type="text" name="name" value=""
                                                                     class="form-control title" placeholder=""
                                                                     autocomplete="off">
                                                             </div>
@@ -80,6 +79,8 @@
                                                                     dẫn sản phẩm
                                                                     <span class="text-danger">(*)</span></label>
                                                                 <input type="text" name="slug"
+                                                                    @php
+dd($product->slug); @endphp
                                                                     value="{{ old('slug', $product->slug ?? '') }}"
                                                                     class="form-control slug" placeholder=""
                                                                     autocomplete="off">
@@ -107,7 +108,8 @@
                                                                 class="form-control">
                                                         </div>
                                                         <div class="form-row col-lg-6">
-                                                            <label for="" class="control-label text-left">Kích thướcc sản phẩm
+                                                            <label for="" class="control-label text-left">Kích
+                                                                thướcc sản phẩm
                                                                 <span class="text-danger">(*)</span></label>
                                                             <input type="text" name="gms"
                                                                 value="{{ old('gms', $product->gms ?? '') }}"
@@ -121,6 +123,7 @@
                                                                 value="{{ old('price', $product->price ?? '') }}"
                                                                 class="form-control">
                                                         </div>
+
                                                         <div class="form-row col-lg-6">
                                                             <label for="" class="control-label text-left">giá giảm
                                                                 <span class="text-danger">(*)</span></label>
@@ -128,6 +131,18 @@
                                                                 value="{{ old('seller', $product->seller ?? '') }}"
                                                                 class="form-control">
                                                         </div>
+                                                        <div class="form-row col-lg-12">
+                                                            <label for="materials" class="control-label text-left">Chất
+                                                                liệu <span class="text-danger">(*)</span></label>
+                                                            <select class="js-select2-multi form-control" name="materials"
+                                                                id="materials">
+                                                                @foreach ($materials as $item)
+                                                                    <option value="{{ $item->id }}">
+                                                                        {{ $item->name }}</option>
+                                                                @endforeach
+                                                            </select>
+                                                        </div>
+
                                                         <div class="col-lg-12">
                                                             <div class="upload__box">
                                                                 <div class="upload__btn-box">
@@ -138,7 +153,23 @@
                                                                             class="upload__inputfile">
                                                                     </label>
                                                                 </div>
-                                                                <div class="upload__img-wrap"></div>
+                                                                <div class="upload__img-wrap">
+                                                                    @if (isset($category->image))
+                                                                        <?php
+                                                                        $image = json_decode($product->image);
+                                                                        ?>
+                                                                        @foreach ($image as $key => $item)
+                                                                            <div class='upload__img-box'>
+                                                                                <div style='background-image: url({{ asset("storage/$item") }})'
+                                                                                    data-number='{{ $key }}'
+                                                                                    data-file='" + f.name + "'
+                                                                                    class='img-bg'>
+                                                                                    <div class='upload__img-close'></div>
+                                                                                </div>
+                                                                            </div>
+                                                                        @endforeach
+                                                                    @endif
+                                                                </div>
                                                             </div>
                                                         </div>
                                                         <div class="col-lg-12">
@@ -146,7 +177,8 @@
                                                                 <div class="form-check form-switch switch-check">
                                                                     <label class="switch">
                                                                         <input type="checkbox" class="status"
-                                                                            name="is_hot" value="1">
+                                                                            name="is_hot" value="1"
+                                                                            {{ isset($product->is_hot) && $product->is_hot == 1 ? 'checked' : '' }}>
                                                                         <span class="slider round"></span>
                                                                         <meta name="csrf-token"
                                                                             content="{{ csrf_token() }}" />
@@ -157,6 +189,7 @@
                                                                 <div class="form-check form-switch switch-check">
                                                                     <label class="switch">
                                                                         <input type="checkbox" class="status js-switch"
+                                                                            {{ isset($product->top_view) && $product->top_view == 1 ? 'checked' : '' }}
                                                                             name="top_view" value="1">
                                                                         <span class="slider round"></span>
                                                                         <meta name="csrf-token"
@@ -200,7 +233,8 @@
                                                                     placeholder="" autocomplete="off">{{ old('description', $product->description ?? '') }}</textarea>
                                                             </div>
                                                         </div>
-                                                        <div class="col-md-12" style="margin-top: 15px">
+
+                                                        {{-- <div class="col-md-12" style="margin-top: 15px">
                                                             <div class="panel panel-primary">
                                                                 <div class="panel-heading">
                                                                     <h3>Image color</h3>
@@ -218,7 +252,7 @@
                                                                     </div>
                                                                 </div>
                                                             </div>
-                                                        </div>
+                                                        </div> --}}
                                                     </div>
                                                 </div>
                                             </div>
@@ -250,5 +284,8 @@
     <script src="{{ asset('backend') }}/js/plugins/switchery/switchery.js"></script>
     <script>
         CKEDITOR.replace('meta_description');
+    </script>
+    <script>
+        $('.tag').tagsinput('items');
     </script>
 @endsection
