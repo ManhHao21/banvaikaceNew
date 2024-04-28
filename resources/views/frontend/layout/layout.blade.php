@@ -15,7 +15,7 @@
                         </div>
                     </div>
                 </td>
-                <td class="cart__price">{{ $item['price'] }}</td>
+                <td class="cart__price">{{ number_format($item['price'], 0, ',', '.') }} VNĐ</td>
                 <td class="cart__quantity">
                     <div class="pro-qty">
                         <input type="text" value="{{ $item['quantity'] }}" class="change_number_cart"

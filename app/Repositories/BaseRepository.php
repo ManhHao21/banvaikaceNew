@@ -87,6 +87,7 @@ class BaseRepository implements BaseRepositoryInterface
         return $this->model->select($column)->with($relation)->findOrFail($modelId);
     }
 
+
     public function getFirstById($id, array $column = ['*'])
     {
         return $this->model->select($column)->where('id', $id)->first();

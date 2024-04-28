@@ -2,20 +2,26 @@
 
 namespace App\Http\Controllers\Fontend;
 
-use App\Models\Material;
-use App\Models\Product;
-use App\Models\Categories;
+use App\Services\ProductCategoryService;
+use App\Services\ProductService;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
 class CategoryController extends Controller
 {
+    protected $productCategoryService;
+    public function __construct(ProductCategoryService $productCategoryService) {
+        $this->productCategoryService = $productCategoryService;
+    }
     public function getCategory($slug) {
-        $category = Categories::whereSlug($slug)->first();
-        $materials = Material::all();
-        if ($category) {
-            $products = Product::where("categories_id", $category->id)->get();
-        }
-        return view("Fontend.shop", compact("category", 'products', 'materials'));
+        return view('frontend.layout.category');
+    }
+
+    public function loadCategory(Request $request, $slug) {
+        $procduct =  $this -> productCategoryService->getProductbyCategory($request, $slug);
+        return response()->json([
+            'success' => 200,
+            'product' => $procduct
+        ]);
     }
 }

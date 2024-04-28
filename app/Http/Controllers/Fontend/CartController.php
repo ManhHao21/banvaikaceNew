@@ -24,19 +24,19 @@ class CartController extends Controller
         if ($request->input('key') == 'order') {
             $product = $this->productService->getCartOrder($id);
             return response()->json([
-                'html' => $product,
+                'key' => $request->input('key'),
             ]);
         } elseif ($request->input('key') == 'like') {
             dd('like');
         } elseif ($request->input('key') == 'change-quantity') {
             $product = $this->productService->updateQuantity($request, $id);
             return response()->json([
-                'html' => $product,
+                'key' => $request->input('key'),
             ]);
         } else if ($request->input('key') == 'close_row') {
             $product = $this->productService->closeRowCart($id);
             return response()->json([
-                'html' => $product,
+                'key' => $request->input('key'),
             ]);
         }
     }

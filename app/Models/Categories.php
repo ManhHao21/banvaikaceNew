@@ -20,16 +20,16 @@ class Categories extends Model
         'publish',
         'image'
     ];
-
-    public function Parent_id()
+    public function children()
     {
         return $this->hasMany(Categories::class, 'parent_id', 'id');
     }
 
-    public function children()
+    public function parent()
     {
         return $this->belongsTo(Categories::class, 'parent_id', 'id');
     }
+    
 
     public function Product()
     {

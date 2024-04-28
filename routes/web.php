@@ -19,6 +19,7 @@ use App\Http\Controllers\Backend\ProductController;
 use App\Http\Controllers\ExcelController;
 use App\Http\Controllers\Fontend\CartController;
 use App\Http\Controllers\Fontend\CategoryController;
+use App\Http\Controllers\Fontend\CheckoutController;
 use App\Http\Controllers\Fontend\DetailController;
 use App\Http\Controllers\Fontend\HomeController;
 use App\Http\Controllers\Ajax\LocationController;
@@ -96,6 +97,9 @@ Route::name('web.')
         Route::get('/product/{slug}', [DetailController::class, 'getProductDetail'])->name('productDetail');
         Route::post('/post/ProductDetail', [DetailController::class, 'postProductDetail'])->name('post.productDetail');
         Route::get('/cart-order', [CartController::class, 'cart'])->name('cart-order');
+        Route::get('/checkout', [CheckoutController::class, 'checkout'])->name('checkout');
+        Route::get('/category/{slug}', [CategoryController::class, 'getCategory'])->name('category');
+        Route::get('/load/category/{slug}', [CategoryController::class, 'loadCategory'])->name('load.category');
     })
     ->middleware(['web', 'auth']);
 //Ajax

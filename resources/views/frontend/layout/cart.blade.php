@@ -1,15 +1,10 @@
 <!DOCTYPE html>
 <html lang="zxx">
-
 @include('frontend.components.head')
 
 <body>
-
     @include('frontend.components.menu-top')
-
     @include('frontend.components.header')
-
-
     <div class="breadcrumb-option">
         <div class="container">
             <div class="row">
@@ -48,32 +43,56 @@
                 </div>
             </div>
             @if (count($cart) > 0)
-                <div class="row">
-                    <div class="col-lg-6 col-md-6 col-sm-6">
-                        <div class="cart__btn">
-                            <a href="#">Tiếp tục mua sắm</a>
-                        </div>
-                    </div>
-                    <div class="col-lg-6 col-md-6 col-sm-6">
-                        <div class="cart__btn update__btn">
-                            <a href="#"><span class="icon_loading"></span> Cập nhật giỏ hàng</a>
-                        </div>
-                    </div>
-                </div>
-                <div class="row justify-content-end">
-                    <div class="col-lg-4 offset-lg-2">
-                        <div class="cart__total__procced">
-                            <h6>Tổng tiền</h6>
-                            <ul>
-                                <li>Tổng phụ <span>$ 750.0</span></li>
-                                <li>Giảm giá <span>$ 750.0</span></li>
+                @php
+                    $sumQuantity = 0;
+                    $totalMoney = 0;
+                    $totalSeller = 0;
+                    $total = 0;
+                    $sell = 0;
+                    foreach ($cart as $item) {
+                        $sumQuantity += $item['quantity'];
+                        $totalMoney += $item['price'] * $item['quantity'];
+                    }
 
-                                <li>Tổng tiền <span>$ 750.0</span></li>
-                            </ul>
-                            <a href="#" class="primary-btn">Thanh toán</a>
-                        </div>
+                    if ($sumQuantity >= 2000) {
+                        $sell = 20 / 100;
+                        $totalSeller = $totalMoney * $sell;
+                    } elseif ($sumQuantity >= 1000) {
+                        $sell = 15 / 100;
+                        $totalSeller = $totalMoney * $sell;
+                    } elseif ($sumQuantity >= 500) {
+                        $sell = 10 / 100;
+                        $totalSeller = $totalMoney * $sell;
+                    }
+
+                    $total = $totalMoney - $totalSeller;
+                    session()->get('total', []);
+                    session()->put('total', $total);
+                @endphp
+
+            <div class="row">
+                <div class="col-lg-6 col-md-6 col-sm-6">
+                    <div class="cart__btn">
+                        <a href="#">Tiếp tục mua sắm</a>
                     </div>
                 </div>
+            </div>
+            <div class="row justify-content-end">
+                <div class="col-lg-5 offset-lg-2">
+                    <div class="cart__total__procced">
+                        <h6>Tổng tiền</h6>
+                        <ul>
+                            <li>Tổng phụ <span>{{ number_format($totalMoney, 0, ',', '.') }} VNĐ</span></li>
+                            @if($sell != 0)
+                            <li>Giảm giá (chiết khấu {{ $sell * 100 }}%) <span> -
+                                    {{ number_format($totalSeller, 0, ',', '.') }} VNĐ</span></li>
+                            @endif
+                            <li>Tổng tiền <span>{{ number_format($total, 0, ',', '.') }} VNĐ</span></li>
+                        </ul>
+                        <a href="/checkout" class="primary-btn">Thanh toán</a>
+                    </div>
+                </div>
+            </div>
             @endif
         </div>
     </section>

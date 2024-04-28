@@ -100,7 +100,7 @@ class ProductCategoryService extends BaseService
             ];
             $Product = $this->ProductCategoryInterface->updated($id, $category);
             DB::commit();
-            return  $Product;
+            return $Product;
         } catch (\Exception $e) {
             DB::rollBack();
             Log::error($e->getMessage());
@@ -125,5 +125,14 @@ class ProductCategoryService extends BaseService
     {
         return ['id', 'name', 'parent_id', 'publish', 'image'];
     }
+
+    public function getProductbyCategory($request, $slug)
+    {
+        // Gọi phương thức để lấy sản phẩm từ danh mục
+        $category = $this->ProductCategoryInterface->findBySlug($request, $slug);
+
+        return $category;
+    }
+
 }
 ?>

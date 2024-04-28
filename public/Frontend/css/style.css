@@ -1413,7 +1413,7 @@ ol {
 
 .sidebar__filter {
 	position: relative;
-	margin-bottom: 60px;
+	margin-bottom: 30px;
 }
 
 .sidebar__filter .section-title {
@@ -1451,25 +1451,16 @@ ol {
 	margin-bottom: 0;
 }
 
-.filter-range-wrap .range-slider .price-input:after {
-	position: absolute;
-	left: 81px;
-	top: 12px;
-	height: 1px;
-	width: 5px;
-	background: #0d0d0d;
-	content: "";
-}
+
 
 .filter-range-wrap .range-slider .price-input input {
 	font-size: 16px;
 	color: #0d0d0d;
-	max-width: 16%;
 	border: none;
 }
 
 .filter-range-wrap .range-slider .price-input input:nth-child(1) {
-	margin-right: 28px;
+	margin-right: 0;
 }
 
 .filter-range-wrap .price-range {

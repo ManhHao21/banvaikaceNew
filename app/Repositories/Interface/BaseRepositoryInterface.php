@@ -23,6 +23,5 @@ interface BaseRepositoryInterface
 
     public function getFirstById($id, array $column = ['*']);
 
-
 }
 ?>

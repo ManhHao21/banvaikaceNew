@@ -46,8 +46,8 @@
                                                     <td class="sorting_1"><input type="checkbox" name=""
                                                             value="{{ $item->id }}" class="checkItem input-check"
                                                             id=""></td>
-                                                    <td>{{ $item->Parent_id->first() ? '--|' : '' }}{{ $item->name }}</td>
-                                                    <td>{{ $item->Parent_id->first() ? $item->Parent_id->first()->name : '' }}
+                                                    <td>{{ $item->parent->first() ? '--|' : '' }}{{ $item->name }}</td>
+                                                    <td>{{ $item->parent->first() ? $item->parent->first()->name : '' }}
                                                     </td>
                                                     <td>
                                                         <label class="switch">
