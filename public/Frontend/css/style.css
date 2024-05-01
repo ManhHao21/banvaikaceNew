@@ -516,7 +516,7 @@ ol {
 }
 
 .banner__text h1 {
-	font-size: 80px;
+	font-size: 40px;
 	color: #111111;
 	font-family: "Cookie", cursive;
 	margin-bottom: 15px;
@@ -3135,6 +3135,18 @@ ol {
 	width: 100%;
 }
 
+#tabs-1 > * {
+	margin-bottom: 0;
+}
+.card__header {
+	display: none;
+}
+.card__section {
+	padding: 0 !important; 
+}
+.card__section .text--pull > * {
+	margin: 0;
+}
 /*--------------------------------- Responsive Media Quaries -----------------------------*/
 
 @media only screen and (min-width: 1600px) and (max-width: 1900px) {
@@ -3617,7 +3629,7 @@ ol {
 		padding-left: 30px;
 	}
 	.banner__text h1 {
-		font-size: 45px;
+		font-size: 40px;
 	}
 	.filter__controls li {
 		margin-right: 5px;

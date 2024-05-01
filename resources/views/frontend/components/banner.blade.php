@@ -5,23 +5,23 @@
                 <div class="banner__slider owl-carousel">
                     <div class="banner__item">
                         <div class="banner__text">
-                            <span>The Chloe Collection</span>
-                            <h1>The Project Jacket</h1>
-                            <a href="#">Shop now</a>
+                            <span>ĐƯA BẠN PHÙ HỢP ĐẾN CẤP ĐỘ</span>
+                            <h1>Vải lông thú giả yêu thích của bạn vừa nhận được Bản nâng cấp tối ưu</h1>
+                            <a href="/category/vai-long-thu-gia">Tìm hiểu thêm</a>
                         </div>
                     </div>
                     <div class="banner__item">
                         <div class="banner__text">
-                            <span>The Chloe Collection</span>
-                            <h1>The Project Jacket</h1>
-                            <a href="#">Shop now</a>
+                            <span>Vải chăn</span>
+                            <h1>Hãy làm cho mùa đông này trở nên phong cách và ấm áp hơn với bộ sưu tập vải chăn của chúng tôi, hoàn hảo cho mọi nhu cầu của bạn.</h1>
+                            <a href="/category/vai-chan">Tìm hiểu thêm</a>
                         </div>
                     </div>
                     <div class="banner__item">
                         <div class="banner__text">
-                            <span>The Chloe Collection</span>
-                            <h1>The Project Jacket</h1>
-                            <a href="#">Shop now</a>
+                            <span>Vai nhung</span>
+                            <h1>oại vải mềm mại, có bề mặt mịn và đặc trưng bởi sợi dài và mảnh</h1>
+                            <a href="/category/vai-nhung">Tìm hiểu thêm</a>
                         </div>
                     </div>
                 </div>

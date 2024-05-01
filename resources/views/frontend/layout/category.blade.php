@@ -78,7 +78,7 @@
                                 </div>
                             </div>
                         </div>
-                        <a href="#" class="btn btn-primary d-flex justify-content-end"
+                        <a href="#" class="btn btn-primary d-flex justify-content-end btn-fillter"
                             style="width:fit-content">Filter</a>
 
                         <div class="sidebar__sizes">
@@ -179,14 +179,11 @@
                 </div>
                 <div class="col-lg-9 col-md-9">
                     <div class="row product-list-container">
-                       
-                        <div class="col-lg-12 text-center">
-                            <div class="pagination__option">
-                                <a href="#">1</a>
-                                <a href="#">2</a>
-                                <a href="#">3</a>
-                                <a href="#"><i class="fa fa-angle-right"></i></a>
-                            </div>
+
+                    </div>
+                    <div class="col-lg-12 text-center">
+                        <div class="pagination__option">
+                            
                         </div>
                     </div>
                 </div>

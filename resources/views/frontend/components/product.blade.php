@@ -30,8 +30,7 @@
                                 data-setbg="{{ asset('storage') }}/{{$image[0]}}">
                                 <div class="label new">New</div>
                                 <ul class="product__hover">
-                                    <li><a href="img/product/product-1.jpg" class="image-popup"><span
-                                                class="arrow_expand"></span></a></li>
+                                    <li><a href="/product/{{$item->slug}}"><i class="fa fa-eye" aria-hidden="true"></i></a></li>
                                     <li><a><span class="icon_heart_alt add_cart" data-key="like" data-id="{{ $item->id }}"></span></a></li>
                                     <li class="add_cart" data-id="{{ $item->id }}" data-key="order"><a><span
                                                 class="icon_bag_alt"></span></a></li>

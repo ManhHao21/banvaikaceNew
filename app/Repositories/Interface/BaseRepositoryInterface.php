@@ -22,6 +22,7 @@ interface BaseRepositoryInterface
     public function deleted($id);
 
     public function getFirstById($id, array $column = ['*']);
+    public function getCondition($slug, array $column = ['*'],  array $relation = []);
 
 }
 ?>

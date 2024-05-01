@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Models\System;
 use session;
 use App\Models\Cart;
 use App\Models\Product;
@@ -58,13 +59,9 @@ class AppServiceProvider extends ServiceProvider
             if (Auth::check()) {
                 $name = Auth::user()->name;
             }
-            $menus = Categories::where([
-                ['parent_id', '=', 0],
-                ['publish', '=', 1]
-            ])->get();
-            $product = Product::where([
-                ['publish', '=', 1]
-            ])->get();
+            $menus = Categories::where([['parent_id', '=', 0], ['publish', '=', 1]])->get();
+            $system = System::get();
+            $product = Product::where([['publish', '=', 1]])->get();
             $view->with('menus', $menus);
             $view->with('product', $product);
             $view->with('name', $name);

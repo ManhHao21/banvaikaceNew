@@ -23,7 +23,7 @@ class BaseRepository implements BaseRepositoryInterface
     public function pagination(array $column = ['*'], array $condition = [], array $join = [], array $extend = [], $perPage = 20, array $relations = [], array $order = [])
     {
         $query = $this->model->select($column)->where(function ($query) use ($condition) {
-            if (isset ($condition['keyword']) && !empty ($condition['keyword'])) {
+            if (isset($condition['keyword']) && !empty($condition['keyword'])) {
                 $query->where('name', 'like', '%' . $condition['keyword'] . '%');
             }
         });
@@ -81,13 +81,15 @@ class BaseRepository implements BaseRepositoryInterface
         return false;
     }
 
-
     public function findById(int $modelId, array $column = ['*'], array $relation = [])
     {
         return $this->model->select($column)->with($relation)->findOrFail($modelId);
     }
 
-
+    public function getCondition($slug, array $column = ['*'],  array $relation = [])
+    {
+        return $this->model->select($column)->with($relation)->where('slug', $slug)->first();
+    }
     public function getFirstById($id, array $column = ['*'])
     {
         return $this->model->select($column)->where('id', $id)->first();

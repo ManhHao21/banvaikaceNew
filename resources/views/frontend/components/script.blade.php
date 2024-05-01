@@ -8,8 +8,10 @@
 <script src="{{ asset('Frontend') }}/js/owl.carousel.min.js"></script>
 <script src="{{ asset('Frontend') }}/js/jquery.nicescroll.min.js"></script>
 <script src="{{ asset('Frontend') }}/js/main.js"></script>
-<script src="{{ asset('Frontend') }}/libary/cart.js"></script>
-<script src="{{ asset('Frontend') }}/libary/toastr.min.js"></script>
 <script src="{{ asset('Frontend') }}/libary/loadCate.js"></script>
+
+<script src="{{ asset('Frontend') }}/libary/toastr.min.js"></script>
+<script src="{{ asset('Frontend') }}/libary/cart.js"></script>
+<script src="{{ asset('Frontend') }}/libary/start.js"></script>
 
 @yield('scripts')

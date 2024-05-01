@@ -52,9 +52,9 @@ class LocationController extends Controller
     //         }
     //     }
     // }
-    public function getComment(CommentRequest $request)
+    public function getComment(Request $request, $id)
     {
-
+        dd($request->all());
         if ($request->input("show") === "show") {
             dd($request->input("show"));
         } else {

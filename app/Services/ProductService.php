@@ -193,6 +193,8 @@ class ProductService extends BaseService
         }
         return session()->put('carts', $cart);
     }
-
+    public function findById($slug) {
+        return $this->ProductRepository->getCondition($slug, ['*'],['category']);
+    }
     
 }

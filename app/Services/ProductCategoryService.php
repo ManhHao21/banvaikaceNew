@@ -130,8 +130,8 @@ class ProductCategoryService extends BaseService
     {
         // Gọi phương thức để lấy sản phẩm từ danh mục
         $category = $this->ProductCategoryInterface->findBySlug($request, $slug);
-
-        return $category;
+        return  $category;
+        
     }
 
 }

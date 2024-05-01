@@ -106,7 +106,7 @@ Route::name('web.')
 Route::get('/ajax/address', [LocationController::class, 'getAddress'])->name('address.province');
 Route::POST('/ajax/dashboard/changeStatus', [DashboardAjaxController::class, 'changeStatus'])->name('.ajax.dashboard.changeStatus');
 Route::POST('/ajax/dashboard/changeStatusPublicAll', [DashboardAjaxController::class, 'changeStatusPublicAll'])->name('.ajax.dashboard.changeStatusPublicAll');
-Route::POST('ajax/comment', [LocationController::class, 'getComment'])->name('comment');
+Route::POST('/ajax/comment/{id}', [LocationController::class, 'getComment'])->name('comment');
 Route::name('Ajax.')->group(function () {
     Route::get('/cart/{id}', [CartController::class, 'getCart'])->name('getCart');
     Route::post('/delete/cart', [CartController::class, 'deleteTable']);
