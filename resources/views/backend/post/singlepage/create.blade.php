@@ -30,9 +30,12 @@
                         <div class="table-responsive">
                             @php
 
-                                $url = $config['method'] == 'create' ? route('admin.singlepage.store') : route('admin.singlepage.update', $singlepage->id);
+                                $url =
+                                    $config['method'] == 'create'
+                                        ? route('admin.singlepage.store')
+                                        : route('admin.singlepage.update', $singlepage->id);
                             @endphp
-                            <form action="{{ $url }}" method="POST" class="box">
+                            <form action="{{ $url }}" method="POST" class="box"  enctype="multipart/form-data">
                                 @csrf
                                 @php
                                     if ($config['method'] == 'create') {
@@ -63,71 +66,60 @@
                                                                     đề bài viết
                                                                     <span class="text-danger">(*)</span></label>
                                                                 <input type="text" name="title"
-                                                                    value="{{ old('title', $singlepage->title ?? '') }}"
+                                                                       value="{{ old('title', $post->title ?? '') }}"
                                                                     class="form-control title" placeholder=""
                                                                     autocomplete="off">
                                                             </div>
-                                                        </div>
-                                                        <div class="col-lg-12">
                                                             <div class="form-row">
                                                                 <label for="" class="control-label text-left">Đường
                                                                     dẫn bài viêt
-                                                                    <span class="text-danger">{{ env('APP_URL') }}/<span
-                                                                            class="slug">{{ $singlepage->slug ?? '' }}</span></span><input
-                                                                        type="hidden" name="slug"></label>
+                                                                    <span class="text-danger">(*)</span></label>
+                                                                <input type="text" name="slug"
+                                                                    value="{{ old('slug', $post->slug ?? '') }}"
+                                                                    class="form-control slug" placeholder=""
+                                                                    autocomplete="off">
                                                             </div>
 
-                                                            <div class="col-lg-12">
-                                                                <div class="form-row">
-                                                                    <label for=""
-                                                                        class="control-label text-left">Nội dung ngắn
-                                                                        <span class="text-danger">(*)</span></label>
-                                                                    <textarea type="text" height="200px !important" name="short_description" value=""
-                                                                        class="form-control text-teara-2" placeholder="" autocomplete="off">{{ old('short_description', $singlepage->short_description ?? '') }}</textarea>
+                                                            <div class="form-row">
+                                                                <label for="" class="control-label text-left">Nội
+                                                                    dung ngắn
+                                                                    <span class="text-danger">(*)</span></label>
+                                                                <textarea type="text" height="200px !important" name="short_description" value=""
+                                                                    class="form-control text-teara-2" placeholder="" autocomplete="off">{{ old('short_description', $post->short_description ?? '') }}</textarea>
+                                                            </div>
+                                                            <div class="form-row">
+                                                                <label for="" class="control-label text-left">Nội
+                                                                    dung bài viết
+                                                                    <span class="text-danger">(*)</span></label>
+                                                                <textarea type="text" id="meta_description" name="content" value="" class="form-control" placeholder=""
+                                                                    autocomplete="off">{{ old('content', $post->content ?? '') }}</textarea>
+                                                            </div>
+                                                            <div class="upload__box">
+                                                                <div class="upload__btn-box">
+                                                                    <label class="btn-primary btn">
+                                                                        <p>Upload images</p>
+                                                                        <input type="file" multiple=""
+                                                                            data-max_length="20" name="image[]"
+                                                                            class="upload__inputfile">
+                                                                    </label>
                                                                 </div>
-                                                            </div>
-                                                            <div class="col-lg-12">
-                                                                <div class="form-row">
-                                                                    <label for=""
-                                                                        class="control-label text-left">Nội dung bài viết
-                                                                        <span class="text-danger">(*)</span></label>
-                                                                    <textarea type="text" id="meta_description" name="content" value="" class="form-control" placeholder=""
-                                                                        autocomplete="off">{{ old('content', $singlepage->content ?? '') }}</textarea>
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-lg-12">
-                                                                <div class="file-upload">
-                                                                    <button class="file-upload-btn" type="button"
-                                                                        style="{{ $config['method'] == 'edit' ? 'display: none;' : '' }}"
-                                                                        onclick="$('.file-upload-input').trigger( 'click' )">Add
-                                                                        Image</button>
-
-                                                                    <div class="image-upload-wrap"
-                                                                        style="{{ $config['method'] == 'edit' ? 'display: none;' : '' }}">
-                                                                        <input class="file-upload-input" name="image"
-                                                                            type='file' onchange="readURL(this);"
-                                                                            value="{{ asset('storage') . ($config['method'] == 'edit' ? '/' . $singlepage->image : '') }}" />
-                                                                        <div class="drag-text">
-                                                                            <h3>Drag and drop a file or select add Image
-                                                                            </h3>
-                                                                        </div>
-                                                                    </div>
-                                                                    <div class="file-upload-content"
-                                                                        style="{{ $config['method'] == 'edit' ? 'display: block;' : '' }}">
-                                                                        <img class="file-upload-image" width="200px"
-                                                                            height="200px"
-                                                                            src="{{ asset('storage') . ($config['method'] == 'edit' ? '/' . $singlepage->image : '') }}"
-                                                                            alt="your image" name='image' />
-
-                                                                        <div class="image-title-wrap">
-                                                                            <button type="button" onclick="removeUpload()"
-                                                                                class="remove-image">Remove
-                                                                                <span class="image-title">Uploaded
-                                                                                    Image</span>
-                                                                            </button>
-                                                                        </div>
-                                                                    </div>
-
+                                                                <div class="upload__img-wrap">
+                                                                    @if (isset($category->image))
+                                                                        <?php
+                                                                        $image = json_decode($product->image);
+                                                                        ?>
+                                                                        @foreach ($image as $key => $item)
+                                                                            <div class='upload__img-box'>
+                                                                                <div style='background-image: url({{ asset("storage/$item") }})'
+                                                                                    data-number='{{ $key }}'
+                                                                                    data-file='" + f.name + "'
+                                                                                    class='img-bg'>
+                                                                                    <div class='upload__img-close'>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        @endforeach
+                                                                    @endif
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -136,13 +128,13 @@
                                             </div>
                                         </div>
                                         <hr>
-                                        @include('backend.components.seo', ['mode' => $singlepage ?? ''])
+                                        @include('backend.components.seo', ['mode' => $post ?? ''])
                                         <div class="text-right mb15">
                                             <button class="btn btn-primary" type="submit">Lưu
                                                 lại</button>
                                         </div>
                                     </div>
-                                </div>
+                                </div>>
                             </form>
                         </div>
                     </div>
@@ -153,7 +145,10 @@
 @endsection
 @section('script')
     <script src="{{ asset('backend') }}/libary/singlepage.js"></script>
-    <script src="{{ asset('backend') }}/libary/image.js"></script>
+    <script src="{{ asset('backend') }}/libary/scripts.js"></script>
+    <script src="{{ asset('backend') }}/libary/imagemulti.js"></script>
+
+
     <script>
         CKEDITOR.replace('meta_description');
     </script>

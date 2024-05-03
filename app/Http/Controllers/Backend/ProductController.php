@@ -6,6 +6,7 @@ use App\Repositories\Interface\MaterialRepositoryInterface;
 use Illuminate\Http\Request;
 use App\Services\ProductService;
 use App\Http\Controllers\Controller;
+use App\Models\Product;
 use App\Repositories\Interface\ProductRepositoryInterface;
 use App\Repositories\Interface\ProductCategoryRepositoryInterface;
 
@@ -41,7 +42,7 @@ class ProductController extends Controller
         $config['seo'] = config('apps.Product.create');
         $config['method'] = 'create';
         $ProductCategory = $this->ProductRepository->getAll();
-        $materials = $this->materialRepository->getAll();
+        $materials = $this->materialRepository->getDatabyWhere('publish', [1]);
             return view('backend.product.product.create', compact('config', 'ProductCategory', 'categories', 'materials'));
     }
 
@@ -63,7 +64,6 @@ class ProductController extends Controller
         $config['seo'] = config('apps.Product.update');
         $config['method'] = 'edit';
         $product = $this->ProductRepository->findById($id);
-        dd($product);
         $categories = $this->ProductCategoryRepository->getAll();
         $materials = $this->materialRepository->getAll();
 
@@ -81,9 +81,9 @@ class ProductController extends Controller
 
     public function show($id)
     {
-        $product = $this->ProductRepository->findById($id);
-        if ($product) {
-            return view('backend.Product.Product.show', compact('product'));
+        $productitem = Product::findOrFail($id);
+        if ($productitem) {
+            return view('backend.Product.Product.show', compact('productitem'));
         } else {
             return redirect()->back()->with('errors', 'Không tồn tại bản ghi, vui lòng xóa sau');
         }

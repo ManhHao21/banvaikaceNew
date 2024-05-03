@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Services;
 
 use Carbon\Carbon;
@@ -26,8 +27,7 @@ class PostService extends BaseService
         $condition['publish'] = $request->integer('publish');
         $Post = $this->PostRepository
             ->pagination(
-                $this->paginateSelect()
-                ,
+                $this->paginateSelect(),
                 $condition,
                 [],
                 ['path' => '/admin/Posts'],
@@ -42,29 +42,44 @@ class PostService extends BaseService
         DB::beginTransaction();
 
         try {
-            $data = $request->except('_token');
+            // Lấy dữ liệu đầu vào từ request
+            $data = $request->only([
+                'title',
+                'short_description',
+                'description',
+                'category_post_id',
+                'content',
+                'slug',
+                'meta_title',
+                'meta_description',
+                'meta_keyword',
+            ]);
+
+            // Xử lý ảnh
             $images = [];
             if ($request->hasFile('image')) {
-                foreach ($data['image'] as $key => $image) {
-                    $images = $this->convertImage($image, 'product-image');
+                foreach ($request->file('image') as $key => $image) {
+                    // Xử lý và lưu ảnh
+                    $images[] = $this->convertImage($image, 'post-image');
                 }
             }
-            $data['image'] = $images;
-            $dataCate = [
-                'title' => $data['title'] ?? "",
-                'image' => json_encode($data['image']) ?? "",
-                'short_description' => $data['short_description'] ?? "",
-                'description' => $data['description'] ?? "",
-                'category_post_id' => $data['category_post_id'] ?? "",
-                'content' => $data['content'] ?? "",
-                'publish' => 1,
-                'slug' => $data['slug'] ?? "",
-                'meta_title' => $data['meta_title'] ?? "",
-                'meta_description' => $data['meta_description'] ?? "",
-                'meta_keyword' => $data['meta_keyword'] ?? ""
-            ];
-            $post = $this->PostRepository->create($dataCate);
+
+            // Đóng gói dữ liệu
+            $data['image'] = json_encode($images);
+            $post = $this->PostRepository->create([
+                "title" => $data['title'],
+                "short_description" => $data['short_description'],
+                "category_post_id" => $data['category_post_id'],
+                "content" => $data['content'],
+                "slug" => $data['slug'],
+                "meta_title" => $data['meta_title'],
+                "meta_description" => $data['meta_description'],
+                "meta_keyword" => $data['meta_keyword'],
+                "image" => $data['image'],
+                'publish' => 1
+            ]);
             DB::commit();
+
             return $post;
         } catch (\Exception $e) {
             DB::rollBack();
@@ -72,6 +87,7 @@ class PostService extends BaseService
             return false;
         }
     }
+
     public function updateStatus(array $post = [])
     {
         DB::beginTransaction();
@@ -86,7 +102,6 @@ class PostService extends BaseService
             Log::error($e->getMessage());
             return false;
         }
-
     }
     public function updateStatusAll(array $post = [])
     {
@@ -100,18 +115,43 @@ class PostService extends BaseService
             Log::error($e->getMessage());
             return false;
         }
-
-
     }
     public function updated($id, $request)
     {
         DB::beginTransaction();
         try {
-            $data = $request->except(['_token']);
+            $data = $request->only([
+                'title',
+                'short_description',
+                'description',
+                'category_post_id',
+                'content',
+                'slug',
+                'meta_title',
+                'meta_description',
+                'meta_keyword',
+            ]);
+
+            // Xử lý ảnh
+            $images = [];
             if ($request->hasFile('image')) {
-                $data['image'] = $this->convertImage($request->file('image'));
+                foreach ($request->file('image') as $key => $image) {
+                    $images[] = $this->convertImage($image, 'post-image');
+                }
             }
-            $Post = $this->PostRepository->updated($id, $data);
+            $data['image'] = json_encode($images);
+            $Post = $this->PostRepository->updated($id, [
+                "title" => $data['title'],
+                "short_description" => $data['short_description'],
+                "category_post_id" => $data['category_post_id'],
+                "content" => $data['content'],
+                "slug" => $data['slug'],
+                "meta_title" => $data['meta_title'],
+                "meta_description" => $data['meta_description'],
+                "meta_keyword" => $data['meta_keyword'],
+                "image" => $data['image'],
+                'publish' => 1
+            ]);
             DB::commit();
             return true;
         } catch (\Exception $e) {
@@ -154,4 +194,3 @@ class PostService extends BaseService
         return $this->PostRepository->getAll();
     }
 }
-?>

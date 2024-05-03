@@ -51,7 +51,10 @@
                                                     <td>{{ $item->title }}</td>
                                                     <td>{!! $item->content !!}</td>
                                                     <td>{{ $item->PostCategory->name ?? '' }}</td>
-                                                    <td><img src="{{ asset('storage/' . $item->image) }}" width="200px"
+                                                    @php
+                                                        $image = json_decode($item->image);
+                                                    @endphp
+                                                    <td><img src="{{ asset('storage/' . $image[0]) }}" width="200px"
                                                             height="200px" alt="">
                                                     </td>
                                                     <td>

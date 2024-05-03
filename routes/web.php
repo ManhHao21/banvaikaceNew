@@ -101,6 +101,9 @@ Route::name('web.')
         Route::post('/post/ProductDetail', [DetailController::class, 'postProductDetail'])->name('post.productDetail');
         Route::get('/cart-order', [CartController::class, 'cart'])->name('cart-order');
         Route::get('/checkout', [CheckoutController::class, 'checkout'])->name('checkout');
+        Route::post('/checkout/payment', [CheckoutController::class, 'payment'])->name('checkout.payment');
+
+
         Route::get('/blog', [BlogController::class, 'index'])->name('blog');
         Route::get('/category/{slug}', [CategoryController::class, 'getCategory'])->name('category');
         Route::get('/load/category/{slug}', [CategoryController::class, 'loadCategory'])->name('load.category');

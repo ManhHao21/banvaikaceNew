@@ -16,15 +16,14 @@ return new class extends Migration
             $table->string('order_code')->unique();
             $table->unsignedBigInteger('user_id')->nullable();
             $table->string('name')->nullable();
-            $table->unsignedBigInteger('province_id')->nullable();
-            $table->string('street')->nullable();
-            $table->string('town')->nullable();
-            $table->string('state')->nullable();
+            $table->string('province_id')->nullable();
+            $table->string('district_id')->nullable();
+            $table->string('ward_id')->nullable();
             $table->string('phone')->nullable();
             $table->string('zip')->nullable();
             $table->string('email')->nullable();
             $table->string('note')->nullable();
-            $table->float('total');
+            $table->string('total')->nullable();
             $table->string('shipping_method')->nullable();
             $table->integer('status')->default(1)->nullable()->comment("0:đơn hàng mới, 1:Đã tiếp nhận, 2:Hủy, 3:thành công");
             $table->integer('Payment_method')->default(1)->comment("1:cash, 2:bnk");
@@ -34,6 +33,7 @@ return new class extends Migration
             $table->string('payment_status')->nullable()->comment("0:chưa thanh toán, 1:đã thanh toán,  2:Hủy");
             $table->string('vnp_BankTranNo')->nullable();
             $table->string('vnp_ResponseCode')->nullable();
+            $table->dateTime('date_order')->nullable();
             $table->timestamps();
         });
     }

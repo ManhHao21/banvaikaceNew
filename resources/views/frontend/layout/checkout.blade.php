@@ -31,7 +31,8 @@
                     @endif
                 </div>
             </div>
-            <form action="#" class="checkout__form">
+            <form action="{{ route('web.checkout.payment') }}" method="POST" class="checkout__form">
+                @csrf
                 <div class="row">
                     <div class="col-lg-8">
                         <h5>Chi tiết thanh toán</h5>
@@ -39,15 +40,15 @@
                             <div class="col-lg-12 col-md-12 col-sm-12">
                                 <div class="checkout__form__input">
                                     <p>Họ và tên <span>*</span></p>
-                                    <input type="text" name>
+                                    <input type="text" name='name' value="{{ Auth::user()->name ?? '' }}">
                                 </div>
                             </div>
                             <div class="col-lg-12">
 
                                 <div class="checkout__form__input">
                                     <p>Address <span>*</span></p>
-                                    <input type="text" placeholder="Street Address">
-                                    <input type="text" placeholder="Apartment. suite, unite ect ( optinal )">
+                                    <input type="text" placeholder="Street Address" name="address"
+                                        value="{{ Auth::user()->address ?? '' }}">
                                 </div>
                                 <div class="row">
                                     <div class="checkout__form__input col-lg-6 col-md-6 col-sm-6">
@@ -57,7 +58,7 @@
                                             <option value="0">[Chọn Thành Phố]</option>
                                             @if (isset($provindes))
                                                 @foreach ($provindes as $province)
-                                                    <option @if (old('province_id') == $province->code) selected @endif
+                                                    <option @if (Auth::user()->province_id == $province->code) selected @endif
                                                         value="{{ $province->code }}">
                                                         {{ $province->name }}</option>
                                                 @endforeach
@@ -82,7 +83,7 @@
 
                                 <div class="checkout__form__input">
                                     <p>Postcode/Zip <span>*</span></p>
-                                    <input type="text">
+                                    <input type="text" name="code">
                                 </div>
                             </div>
 
@@ -90,14 +91,30 @@
 
                                 <div class="checkout__form__input">
                                     <p>Phone <span>*</span></p>
-                                    <input type="text">
+                                    <input type="text" name="phone" value="{{ Auth::user()->phone ?? '' }}">
                                 </div>
                             </div>
                             <div class="col-lg-6 col-md-6 col-sm-6">
                                 <div class="checkout__form__input">
                                     <p>Email <span>*</span></p>
-                                    <input type="text">
+                                    <input type="text" name="email" value="{{ Auth::user()->email ?? '' }}">
                                 </div>
+                            </div>
+                            <div class="col-lg-12">
+                                <div class="checkout__form__input">
+                                    <p>Oder notes <span>*</span></p>
+                                    <input type="text"
+                                        placeholder="Note about your order, e.g, special noe for delivery"
+                                        name="note">
+                                </div>
+                            </div>
+                            <div class="checkout__order__widget">
+                                <h5>Phương thức vận chuyển</h5>
+                                <label for="o-acc">
+                                    Thanh toán khi nhận hàng
+                                    <input type="radio" id="o-acc" checked>
+                                    <span class="checkmark"></span>
+                                </label>
                             </div>
                         </div>
                     </div>
@@ -122,6 +139,10 @@
                             </div>
                             <div class="checkout__order__total">
                                 <ul>
+
+                                    <li>Phí chuyển <span>Tính sau</span></li>
+                                </ul>
+                                <ul>
                                     <?php
                                     $total = session()->get('total', []);
                                     ?>
@@ -129,30 +150,23 @@
                                     <li>Tổng tiền <span>{{ number_format($total, 0, ',', '.') }} VND</span></li>
                                 </ul>
                             </div>
+
                             <div class="checkout__order__widget">
-                                <label for="o-acc">
-                                    Create an acount?
-                                    <input type="checkbox" id="o-acc">
+                                <h5>Phương thức thanh toán</h5>
+                                <label for="payment_option">
+                                    Thanh toán khi nhận hàng
+                                    <input type="radio" id="payment_option" name="payment_option" value="cash">
                                     <span class="checkmark"></span>
                                 </label>
-                                <p>Create am acount by entering the information below. If you are a returing
-                                    customer
-                                    login at the top of the page.</p>
                                 <label for="check-payment">
-                                    Cheque payment
-                                    <input type="checkbox" id="check-payment">
+                                    Thanh toán VnPay
+                                    <input type="radio" id="check-payment" name="payment_option" value="bank">
                                     <span class="checkmark"></span>
                                 </label>
-                                <label for="paypal">
-                                    PayPal
-                                    <input type="checkbox" id="paypal">
-                                    <span class="checkmark"></span>
-                                </label>
+                                <button type="submit" class="site-btn">Đặt hàng</button>
                             </div>
-                            <button type="submit" class="site-btn">Place oder</button>
                         </div>
                     </div>
-                </div>
             </form>
         </div>
     </section>

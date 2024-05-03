@@ -52,7 +52,7 @@
                                                         <label class="switch">
                                                             <input type="checkbox"
                                                                 class="status js-switch-{{ $item->id }}"
-                                                                data-field="publish" data-model="PostCategory"
+                                                                data-field="publish" data-model="Material"
                                                                 {{ $item->publish == 1 ? 'checked' : '' }}
                                                                 data-id="{{ $item->id }}">
                                                             <span class="slider round"></span>

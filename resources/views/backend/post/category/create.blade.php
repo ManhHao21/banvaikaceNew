@@ -30,7 +30,10 @@
                         <div class="table-responsive">
                             @php
 
-                                $url = $config['method'] == 'create' ? route('admin.postcategory.store') : route('admin.postcategory.update', $postCategory->id);
+                                $url =
+                                    $config['method'] == 'create'
+                                        ? route('admin.postcategory.store')
+                                        : route('admin.postcategory.update', $postCategory->id);
                             @endphp
                             <form action="{{ $url }}" method="POST" class="box">
                                 @csrf
@@ -43,7 +46,7 @@
 
                                 <div class="wrapper wrapper-content animated fadeInRight">
                                     <div class="row pl-2">
-                                        <div class="col-lg-5">
+                                        <div class="col-lg-4">
                                             <div class="panel-head">
                                                 <div class="panel-title">Thông tin chung</div>
                                                 <div class="panel-description">
@@ -53,7 +56,7 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="col-lg-7">
+                                        <div class="col-lg-8">
                                             <div class="ibox">
                                                 <div class="ibox-content">
                                                     <div class="row mb15">
@@ -79,20 +82,17 @@
                                                                     autocomplete="off">
                                                             </div>
 
-                                                            <div class="col-lg-12">
-                                                                <div class="form-row">
-                                                                    <label for=""
-                                                                        class="control-label text-left">Danh
-                                                                        mục
-                                                                        cha
-                                                                    </label>
-                                                                    <select name="parent_id"
-                                                                        class="form-control districts setupSelect2 location"
-                                                                        data-target="wards">
-                                                                        <option value="0">Chọn danh mục</option>
-                                                                        {{ getCategories($categorys, old('parent_id')) }}
-                                                                    </select>
-                                                                </div>
+                                                            <div class="form-row">
+                                                                <label for="" class="control-label text-left">Danh
+                                                                    mục
+                                                                    cha
+                                                                </label>
+                                                                <select name="parent_id"
+                                                                    class="form-control districts setupSelect2 location"
+                                                                    data-target="wards">
+                                                                    <option value="0">Chọn danh mục</option>
+                                                                    {{ getCategories($categorys, old('parent_id')) }}
+                                                                </select>
                                                             </div>
                                                         </div>
                                                     </div>

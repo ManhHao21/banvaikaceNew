@@ -64,7 +64,6 @@ class BaseRepository implements BaseRepositoryInterface
         $admin = $this->model->find($id);
         if ($admin) {
             if ($file) {
-                dd($admin->image);
                 $imagePaths = json_decode($admin->image, true);
                 if (count($imagePaths) > 1) {
                     foreach ($imagePaths as $key => $value) {
@@ -85,7 +84,9 @@ class BaseRepository implements BaseRepositoryInterface
     {
         return $this->model->select($column)->with($relation)->findOrFail($modelId);
     }
-
+    public function find($id) {
+        return $this->model->find($id);
+    }
     public function getCondition($slug, array $column = ['*'],  array $relation = [])
     {
         return $this->model->select($column)->with($relation)->where('slug', $slug)->first();
@@ -94,8 +95,17 @@ class BaseRepository implements BaseRepositoryInterface
     {
         return $this->model->select($column)->where('id', $id)->first();
     }
+    /**
+     * Insert
+     * @param array $attributes
+     * @return mixed
+     */
     public function insert(array $attributes)
     {
         return $this->model->insert($attributes);
+    }
+
+    public function getDatabyWhere(string $whereInField = '', array $whereIn = []) {
+        return $this->model->whereIn($whereInField, $whereIn)->get();
     }
 }

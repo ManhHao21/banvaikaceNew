@@ -23,6 +23,7 @@ interface BaseRepositoryInterface
 
     public function getFirstById($id, array $column = ['*']);
     public function getCondition($slug, array $column = ['*'],  array $relation = []);
-
+    public function getDatabyWhere(string $whereInField = '', array $whereIn = []);
+    public function insert(array $attributes);
 }
 ?>

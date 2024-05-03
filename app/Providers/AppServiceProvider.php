@@ -32,10 +32,17 @@ class AppServiceProvider extends ServiceProvider
         'App\Repositories\Interface\SystemRepositoryInterface' => 'App\Repositories\SystemRepository',
 
         'App\Repositories\Interface\DistrictRepositoryInterface' => 'App\Repositories\DistrictRepository',
+
         'App\Repositories\Interface\AdminRepositoryInterface' => 'App\Repositories\AdminRepository',
+
         'App\Repositories\Interface\ImageColorProductRepositoryInterface' => 'App\Repositories\ImageColorProductRepository',
+
         'App\Repositories\Interface\RepositoryInterface' => 'App\Repositories\Repository',
+
         'App\Repositories\Interface\WardRepositoryInterface' => 'App\Repositories\WardRepository',
+        'App\Repositories\Interface\ProvinceRepositoryInterface' => 'App\Repositories\ProvinceRepository',
+        'App\Repositories\Interface\OrderDetailRepositoryInterface' => 'App\Repositories\OrderDetailRepository',
+        'App\Repositories\Interface\ProductOrderDetailRepositoryInterface' => 'App\Repositories\ProductOrderDetailRepository',
     ];
     /**
      * Register any application services.

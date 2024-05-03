@@ -60,6 +60,25 @@
                                                     <td><img width="90px" height="90px"
                                                             src="{{ asset('storage/' . $images[0]) }}" alt="">
                                                     </td>
+                                                    <td>
+                                                        @php
+                                                            $material = json_decode($item->material_id);
+                                                        @endphp
+
+                                                        @if ($material)
+                                                            @foreach ($material as $materialId)
+                                                                @php
+                                                                    $mater = DB::table('material')
+                                                                        ->where('id', $materialId)
+                                                                        ->first();
+                                                                @endphp
+
+                                                                @if ($mater)
+                                                                    <button class="btn btn-primary border-1">{{ $mater->name }}</button>
+                                                                @endif
+                                                            @endforeach
+                                                        @endif
+                                                    </td>
 
                                                     <td>
                                                         <label class="switch">
