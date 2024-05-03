@@ -13,4 +13,4 @@ class ProvinceRepository extends BaseRepository implements ProvinceRepositoryInt
     {
         $this->model = $model;
     }
-}
+}git push gitlab --all
