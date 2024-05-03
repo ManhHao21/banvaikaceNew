@@ -9,6 +9,8 @@ use App\Http\Controllers\Backend\SinglePageController;
 use App\Http\Controllers\Backend\SystemController;
 use App\Http\Controllers\Backend\UserCatelogueController;
 use App\Http\Controllers\Backend\UserController;
+use App\Http\Controllers\Fontend\BlogController;
+use App\Http\Controllers\Fontend\CommentController;
 use App\Http\Controllers\Fontend\AuthController as LoginController;
 use App\Http\Controllers\Backend\CategoriesController;
 use App\Http\Controllers\Backend\DashboardController;
@@ -92,12 +94,14 @@ Route::name('web.')
         Route::get('/login', [LoginController::class, 'login'])->name('login');
         Route::post('/login', [LoginController::class, 'postLogin'])->name('login.user');
         Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
-        Route::get('/register', [LoginController::class, 'logoregisterut'])->name('register');
+        Route::get('/register', [LoginController::class, 'register'])->name('register');
+        Route::post('/register', [LoginController::class, 'postRegister'])->name('post.register');
 
         Route::get('/product/{slug}', [DetailController::class, 'getProductDetail'])->name('productDetail');
         Route::post('/post/ProductDetail', [DetailController::class, 'postProductDetail'])->name('post.productDetail');
         Route::get('/cart-order', [CartController::class, 'cart'])->name('cart-order');
         Route::get('/checkout', [CheckoutController::class, 'checkout'])->name('checkout');
+        Route::get('/blog', [BlogController::class, 'index'])->name('blog');
         Route::get('/category/{slug}', [CategoryController::class, 'getCategory'])->name('category');
         Route::get('/load/category/{slug}', [CategoryController::class, 'loadCategory'])->name('load.category');
     })
@@ -106,7 +110,7 @@ Route::name('web.')
 Route::get('/ajax/address', [LocationController::class, 'getAddress'])->name('address.province');
 Route::POST('/ajax/dashboard/changeStatus', [DashboardAjaxController::class, 'changeStatus'])->name('.ajax.dashboard.changeStatus');
 Route::POST('/ajax/dashboard/changeStatusPublicAll', [DashboardAjaxController::class, 'changeStatusPublicAll'])->name('.ajax.dashboard.changeStatusPublicAll');
-Route::POST('/ajax/comment/{id}', [LocationController::class, 'getComment'])->name('comment');
+Route::POST('/ajax/comment/{id}', [CommentController::class, 'getComment'])->name('comment');
 Route::name('Ajax.')->group(function () {
     Route::get('/cart/{id}', [CartController::class, 'getCart'])->name('getCart');
     Route::post('/delete/cart', [CartController::class, 'deleteTable']);

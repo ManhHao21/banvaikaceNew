@@ -25,17 +25,31 @@
                         @endforeach
 
 
-                        <li><a href="./blog.html">Bài viết</a></li>
+                        <li><a href="./blog">Bài viết</a></li>
                         <li><a href="./contact.html">Liên hệ</a></li>
                     </ul>
                 </nav>
             </div>
             <div class="col-lg-3">
                 <div class="header__right">
-                    <div class="header__right__auth">
-                        <a href="#">Login</a>
-                        <a href="#">Register</a>
-                    </div>
+                    @if (!Auth::check())
+                        <div class="header__right__auth">
+                            <a href="/login">Login</a>
+                            <a href="/register">Register</a>
+                        </div>
+                    @else
+                        @if (Auth::check())
+                            <div class="header__right__auth d-flex">
+                                <a href="/profile"
+                                    >
+                                    {{ Auth::user()->name }}
+                                </a>
+                                <a href="/logout">Đăng xuất</a>
+                            </div>
+                        @endif
+
+                    @endif
+
                     <ul class="header__right__widget">
                         <li><span class="icon_search search-switch"></span></li>
                         <li><a href="#"><span class="icon_heart_alt"></span>

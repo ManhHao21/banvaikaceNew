@@ -190,34 +190,44 @@
                                                 <?php
                                                 for ($i = 1; $i <= 5; $i++) {
                                                     echo '
-                                                        <i class="fa fa-star d-none" aria-hidden="true"  data-key="' .
+                                                                                                                                                                                                        <i class="fa fa-star d-none" aria-hidden="true"  data-key="' .
                                                         $i .
                                                         '"></i>
-                                                        <i class="fa fa-star-o" aria-hidden="true" data-key="' .
+                                                                                                                                                                                                        <i class="fa fa-star-o" aria-hidden="true" data-key="' .
                                                         $i .
                                                         '"></i>
-                                                    ';
+                                                                                                                                                                                                    ';
                                                 }
                                                 ?>
 
                                             </div>
                                         </div>
-                                        <form id="#form_comment" method="POST" data-url="{{ route('comment', $product_detail->id) }}">
+                                        <?php
+                                        use Illuminate\Support\Facades\Auth;
+                                        ?>
+                                        <form id="#form_comment_comment" method="POST"
+                                            data-url="{{ route('comment', $product_detail->id) }}">
+                                            @csrf
                                             <div class="form-group">
                                                 <label for="message">Your Review *</label>
                                                 <textarea id="message" cols="30" rows="5" class="form-control" name='content'></textarea>
                                             </div>
                                             <div class="form-group">
                                                 <label for="name">Your Name *</label>
-                                                <input type="text" class="form-control" id="name" name="name">
+                                                <input type="text" class="form-control" id="name"
+                                                    name="name"
+                                                    value="{{ Auth::check() ? Auth::user()->name : '' }}">
                                             </div>
                                             <div class="form-group">
                                                 <label for="email">Your Email *</label>
-                                                <input type="email" class="form-control" id="email" name="email">
+                                                <input type="email" class="form-control" id="email"
+                                                    name="email"
+                                                    value="{{ Auth::check() ? Auth::user()->email : '' }}">
                                             </div>
                                             <div class="form-group mb-0">
-                                                <button type="submit" value="Leave Your Review"
-                                                    class="btn btn-primary px-3 submit_comment" data-id=""> Gửi đi</button>
+                                                <button type="submit" class="btn btn-primary px-3 submit_comment"
+                                                    data-id="{{ $product_detail->id }}"> Gửi
+                                                    đi</button>
                                             </div>
                                         </form>
                                     </div>

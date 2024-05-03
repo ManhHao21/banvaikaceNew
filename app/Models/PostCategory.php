@@ -19,11 +19,12 @@ class PostCategory extends Model
         'publish'
     ];
 
-    public function Parent_id()
+    public function children()
     {
         return $this->hasMany(PostCategory::class, 'parent_id', 'id');
     }
-    public function childrent()
+
+    public function parent()
     {
         return $this->belongsTo(PostCategory::class, 'parent_id', 'id');
     }

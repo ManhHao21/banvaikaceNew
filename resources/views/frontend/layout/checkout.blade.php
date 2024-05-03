@@ -24,52 +24,70 @@
         <div class="container">
             <div class="row">
                 <div class="col-lg-12">
-                    <h6 class="coupon__link"><span class="icon_tag_alt"></span> <a href="#">Have a coupon?</a>
-                        Click
-                        here to enter your code.</h6>
+                    @if (!Auth::check())
+                        <h6 class="coupon__link"><span class="icon_tag_alt"></span> <a href="/login">Đăng nhập tài
+                                khoản?</a>
+                            Login</h6>
+                    @endif
                 </div>
             </div>
             <form action="#" class="checkout__form">
                 <div class="row">
                     <div class="col-lg-8">
-                        <h5>Billing detail</h5>
+                        <h5>Chi tiết thanh toán</h5>
                         <div class="row">
-                            <div class="col-lg-6 col-md-6 col-sm-6">
+                            <div class="col-lg-12 col-md-12 col-sm-12">
                                 <div class="checkout__form__input">
-                                    <p>First Name <span>*</span></p>
-                                    <input type="text">
-                                </div>
-                            </div>
-                            <div class="col-lg-6 col-md-6 col-sm-6">
-                                <div class="checkout__form__input">
-                                    <p>Last Name <span>*</span></p>
-                                    <input type="text">
+                                    <p>Họ và tên <span>*</span></p>
+                                    <input type="text" name>
                                 </div>
                             </div>
                             <div class="col-lg-12">
-                                <div class="checkout__form__input">
-                                    <p>Country <span>*</span></p>
-                                    <input type="text">
-                                </div>
+
                                 <div class="checkout__form__input">
                                     <p>Address <span>*</span></p>
                                     <input type="text" placeholder="Street Address">
                                     <input type="text" placeholder="Apartment. suite, unite ect ( optinal )">
                                 </div>
-                                <div class="checkout__form__input">
-                                    <p>Town/City <span>*</span></p>
-                                    <input type="text">
+                                <div class="row">
+                                    <div class="checkout__form__input col-lg-6 col-md-6 col-sm-6">
+                                        <p>Tỉnh <span>*</span></p>
+                                        <select name="province_id" class="form-control setupSelect2 province location"
+                                            data-target="districts">
+                                            <option value="0">[Chọn Thành Phố]</option>
+                                            @if (isset($provindes))
+                                                @foreach ($provindes as $province)
+                                                    <option @if (old('province_id') == $province->code) selected @endif
+                                                        value="{{ $province->code }}">
+                                                        {{ $province->name }}</option>
+                                                @endforeach
+                                            @endif
+                                        </select>
+                                    </div>
+                                    <div class="checkout__form__input col-lg-6 col-md-6 col-sm-6 ">
+                                        <p>Huyên <span>*</span></p>
+                                        <select name="district_id" class="form-control districts setupSelect2 location"
+                                            data-target="wards">
+                                            <option value="0">[Chọn Quận/Huyện]</option>
+                                        </select>
+                                    </div>
                                 </div>
+
                                 <div class="checkout__form__input">
-                                    <p>Country/State <span>*</span></p>
-                                    <input type="text">
+                                    <p>Xã <span>*</span></p>
+                                    <select name="ward_id" class="form-control setupSelect2 wards">
+                                        <option value="0">[Chọn Phường/Xã]</option>
+                                    </select>
                                 </div>
+
                                 <div class="checkout__form__input">
                                     <p>Postcode/Zip <span>*</span></p>
                                     <input type="text">
                                 </div>
                             </div>
+
                             <div class="col-lg-6 col-md-6 col-sm-6">
+
                                 <div class="checkout__form__input">
                                     <p>Phone <span>*</span></p>
                                     <input type="text">
@@ -79,33 +97,6 @@
                                 <div class="checkout__form__input">
                                     <p>Email <span>*</span></p>
                                     <input type="text">
-                                </div>
-                            </div>
-                            <div class="col-lg-12">
-                                <div class="checkout__form__checkbox">
-                                    <label for="acc">
-                                        Create an acount?
-                                        <input type="checkbox" id="acc">
-                                        <span class="checkmark"></span>
-                                    </label>
-                                    <p>Create am acount by entering the information below. If you are a returing
-                                        customer login at the <br />top of the page</p>
-                                </div>
-                                <div class="checkout__form__input">
-                                    <p>Account Password <span>*</span></p>
-                                    <input type="text">
-                                </div>
-                                <div class="checkout__form__checkbox">
-                                    <label for="note">
-                                        Note about your order, e.g, special noe for delivery
-                                        <input type="checkbox" id="note">
-                                        <span class="checkmark"></span>
-                                    </label>
-                                </div>
-                                <div class="checkout__form__input">
-                                    <p>Oder notes <span>*</span></p>
-                                    <input type="text"
-                                        placeholder="Note about your order, e.g, special noe for delivery">
                                 </div>
                             </div>
                         </div>
@@ -134,7 +125,7 @@
                                     <?php
                                     $total = session()->get('total', []);
                                     ?>
-                                    
+
                                     <li>Tổng tiền <span>{{ number_format($total, 0, ',', '.') }} VND</span></li>
                                 </ul>
                             </div>
@@ -144,7 +135,8 @@
                                     <input type="checkbox" id="o-acc">
                                     <span class="checkmark"></span>
                                 </label>
-                                <p>Create am acount by entering the information below. If you are a returing customer
+                                <p>Create am acount by entering the information below. If you are a returing
+                                    customer
                                     login at the top of the page.</p>
                                 <label for="check-payment">
                                     Cheque payment

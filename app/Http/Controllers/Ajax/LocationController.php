@@ -64,20 +64,4 @@ class LocationController extends Controller
         }
         return response()->json(['html' => $htmlComment]);
     }
-
-    public function renderComment($data)
-    {
-        $htmlComment = "";
-        if ($data) {
-            $htmlComment .= '<div class="media mb-4">
-            <img src="{{asset("Fontend")}}/img/user.jpg" alt="Image" class="img-fluid mr-3 mt-1"
-                style="width: 45px;">
-            <div class="media-body">
-                <h6>' . $data['name'] . '</h6>
-                <p>' . $data['content'] . '</p>
-            </div>
-        </div>';
-        }
-        return $htmlComment;
-    }
 }

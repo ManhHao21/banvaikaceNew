@@ -28,7 +28,6 @@ class AuthController extends Controller
             'password' => $request->password,
         ];
             if (Auth::guard('admin')->attempt($credentials) || Auth::attempt($credentials)) {
-
                 return redirect(RouteServiceProvider::ADMIN);
             } else {
                 return redirect()->route('admin.login')->with('error', "Đăng nhập Thất bại, vui lòng kiểm tra email và mật khẩu");

@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 use App\Services\Interface\PostServiceInterface;
 
-class PostService  extends BaseService
+class PostService extends BaseService
 {
     protected $PostRepository;
 
@@ -43,10 +43,27 @@ class PostService  extends BaseService
 
         try {
             $data = $request->except('_token');
+            $images = [];
             if ($request->hasFile('image')) {
-                $data['image'] = $this->convertImage($request->file('image'));
+                foreach ($data['image'] as $key => $image) {
+                    $images = $this->convertImage($image, 'product-image');
+                }
             }
-            $post = $this->PostRepository->create($data);
+            $data['image'] = $images;
+            $dataCate = [
+                'title' => $data['title'] ?? "",
+                'image' => json_encode($data['image']) ?? "",
+                'short_description' => $data['short_description'] ?? "",
+                'description' => $data['description'] ?? "",
+                'category_post_id' => $data['category_post_id'] ?? "",
+                'content' => $data['content'] ?? "",
+                'publish' => 1,
+                'slug' => $data['slug'] ?? "",
+                'meta_title' => $data['meta_title'] ?? "",
+                'meta_description' => $data['meta_description'] ?? "",
+                'meta_keyword' => $data['meta_keyword'] ?? ""
+            ];
+            $post = $this->PostRepository->create($dataCate);
             DB::commit();
             return $post;
         } catch (\Exception $e) {
@@ -117,7 +134,7 @@ class PostService  extends BaseService
             return false;
         }
     }
-   
+
     private function paginateSelect()
     {
         return [
@@ -130,6 +147,11 @@ class PostService  extends BaseService
             'category_post_id',
             'image'
         ];
+    }
+
+    public function getPostRequest($request)
+    {
+        return $this->PostRepository->getAll();
     }
 }
 ?>

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Fontend;
 
+use App\Services\ProductService;
 use session;
 use App\Models\Comment;
 use App\Models\Product;
@@ -11,21 +12,14 @@ use Illuminate\Support\Facades\Auth;
 
 class DetailController extends Controller
 {
+    protected $productService;
+    public function __construct(ProductService $productService) {
+        $this->productService = $productService;
+    }
     public function getProductDetail($slug)
     {
-        $product = Product::where('slug', '=', $slug)->first();
-        if ($product) {
-            $commentCount = $product->comments;
-            $comments = $product->comments()->latest()->take(5)->get();
-            $relatedProducts = Product::where('categories_id', $product->categories_id)
-                ->where('slug', '!=', $slug)
-                ->latest()
-                ->take(10)
-                ->get();
-
-            return view('fontend.productDetail', compact('product', 'comments', 'commentCount', 'relatedProducts'));
-        }
-        return abort(404);
+        $product_detail = $this->productService->findById($slug);
+        return view('frontend.layout.product-detail', compact('product_detail'));
     }
 
     public function postProductDetail(Request $request)

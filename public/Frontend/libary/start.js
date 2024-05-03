@@ -56,37 +56,39 @@
         }
     };
     HT.submitComment = () => {
-        // Log the length of selected form elements for debugging
-        console.log(
-            "Number of selected form elements:",
-            $(".submit_comment").length
-        );
-
         if ($(".submit_comment").length > 0) {
             $(".submit_comment").on("click", function (e) {
-                e.preventDefault();
-                // Get the action URL from the form's action attribute
-                let url = $("form#form_comment").attr("action");
-                // Check if the URL is not undefined or empty
-                if (url) {
-                    let form_comment = $("#form_comment")[0]; // Get the form element
-                    let formData = new FormData(form_comment);
-                    formData.append("rating", HT.key);
-                    $.ajax({
-                        type: "post",
-                        url: url, // Use the obtained URL
-                        data: formData,
-                        dataType: "json",
-                        success: function (response) {
-                            // Handle success response
-                        },
-                    });
-                } else {
-                    console.error("Action URL is undefined or empty");
-                }
+                e.preventDefault(); // Ngăn chặn hành động mặc định của nút Gửi
+
+                let id = $(this).data("id"); // Lấy giá trị data-id từ nút Gửi
+                let form_comment = $("#form_comment_comment")[0]; // Lấy phần tử form
+
+                // Tạo đối tượng FormData từ form
+                let formData = new FormData(form_comment);
+                console.log("====================================");
+                console.log(formData);
+                console.log("====================================");
+                // Thêm CSRF token vào formData
+                formData.append("_token", $("input[name='_token']").val());
+
+                // Thêm rating vào formData (HT.key)
+                formData.append("rating", HT.key);
+
+                // Gửi AJAX request
+                $.ajax({
+                    type: "post",
+                    url: "/ajax/comment/" + id,
+                    data: formData,
+                    dataType: "json",
+                    cache: false,
+                    contentType: false,
+                    processData: false,
+                }).done(function (response) {
+                    // Xử lý phản hồi từ server (response)
+                    alert(response); // Hiển thị alert với phản hồi từ server
+                });
             });
         }
-        // Access HT.key within submitComment function
     };
 
     $(document).ready(function () {
