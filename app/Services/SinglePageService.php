@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Services;
 
 use Carbon\Carbon;
@@ -8,7 +9,7 @@ use App\Repositories\SinglePageRepository;
 use Illuminate\Support\Facades\Hash;
 use App\Services\Interface\SinglePageServiceInterface;
 
-class SinglePageService  extends BaseService
+class SinglePageService extends BaseService
 {
     protected $SinglePageRepository;
 
@@ -22,16 +23,7 @@ class SinglePageService  extends BaseService
         $condition['keyword'] = addslashes($request->input('keyword'));
         $perpage = $request->integer('perpage');
         $condition['publish'] = $request->integer('publish');
-        $Post = $this->SinglePageRepository
-            ->pagination(
-                $this->paginateSelect()
-                ,
-                $condition,
-                [],
-                ['path' => '/admin/singlepage'],
-                $perpage,
-                ['postCategory']
-            );
+        $Post = $this->SinglePageRepository->pagination($this->paginateSelect(), $condition, [], ['path' => '/admin/singlepage'], $perpage, ['postCategory']);
         return $Post;
     }
 
@@ -41,10 +33,28 @@ class SinglePageService  extends BaseService
 
         try {
             $data = $request->except('_token');
+            // Xử lý ảnh
+            $images = [];
             if ($request->hasFile('image')) {
-                $data['image'] = $this->convertImage($request->file('image'), '/singlepage/image');
+                foreach ($request->file('image') as $key => $image) {
+                    // Xử lý và lưu ảnh
+                    $images[] = $this->convertImage($image, 'post-image');
+                }
             }
-            $post = $this->SinglePageRepository->create($data);
+
+            // Đóng gói dữ liệu
+            $data['image'] = json_encode($images);
+            $post = $this->SinglePageRepository->create([
+                'title' => $data['title'],
+                'slug' => $data['slug'],
+                'short_description' => $data['short_description'],
+                'content' => $data['content'],
+                'image' => $data['image'],
+                'meta_title' => $data['meta_title'],
+                'meta_description' => $data['meta_description'],
+                'meta_keyword' => $data['meta_keyword'],
+                'publish' => 1,
+            ]);
             DB::commit();
             return $post;
         } catch (\Exception $e) {
@@ -58,16 +68,15 @@ class SinglePageService  extends BaseService
         DB::beginTransaction();
 
         try {
-            $payload[$post['data-field']] = ($post['value'] == "off" ? 2 : 1);
+            $payload[$post['data-field']] = $post['value'] == 'off' ? 2 : 1;
             $Post = $this->SinglePageRepository->updated($post['modelId'], $payload);
             DB::commit();
-            return TRUE;
+            return true;
         } catch (\Exception $e) {
             DB::rollBack(); // Rollback giao dịch nếu có lỗi
             Log::error($e->getMessage());
             return false;
         }
-
     }
     public function updateStatusAll(array $post = [])
     {
@@ -75,24 +84,39 @@ class SinglePageService  extends BaseService
             $payload[$post['data-field']] = $post['value'];
             $flag = $this->SinglePageRepository->updateByWhereIn('id', $post['id'], $payload);
             DB::commit();
-            return TRUE;
+            return true;
         } catch (\Exception $e) {
             DB::rollBack(); // Rollback giao dịch nếu có lỗi
             Log::error($e->getMessage());
             return false;
         }
-
-
     }
     public function updated($id, $request)
     {
         DB::beginTransaction();
         try {
-            $data = $request->except(['_token']);
+            $data = $request->except('_token');
+            // Xử lý ảnh
+            $images = [];
             if ($request->hasFile('image')) {
-                $data['image'] = $this->convertImage($request->file('image'), '/singlepage/image');
+                foreach ($request->file('image') as $key => $image) {
+                    // Xử lý và lưu ảnh
+                    $images[] = $this->convertImage($image, 'post-image');
+                }
             }
-            $Post = $this->SinglePageRepository->updated($id, $data);
+            $data['image'] = json_encode($images);
+
+            $Post = $this->SinglePageRepository->updated($id, [
+                'title' => $data['title'],
+                'slug' => $data['slug'],
+                'short_description' => $data['short_description'],
+                'content' => $data['content'],
+                'image' => $data['image'],
+                'meta_title' => $data['meta_title'],
+                'meta_description' => $data['meta_description'],
+                'meta_keyword' => $data['meta_keyword'],
+                'publish' => 1,
+            ]);
             DB::commit();
             return true;
         } catch (\Exception $e) {
@@ -115,18 +139,9 @@ class SinglePageService  extends BaseService
             return false;
         }
     }
-    
+
     private function paginateSelect()
     {
-        return [
-            'id',
-            'title',
-            'short_description',
-            'description',
-            'publish',
-            'content',
-            'image'
-        ];
+        return ['id', 'title', 'short_description', 'description', 'publish', 'content', 'image'];
     }
 }
-?>

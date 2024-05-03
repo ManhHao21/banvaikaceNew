@@ -26,7 +26,7 @@ class ProductService extends BaseService
         $condition['keyword'] = addslashes($request->input('keyword'));
         $perpage = $request->integer('perpage');
         $condition['publish'] = $request->integer('publish');
-        $category = $this->ProductRepository->pagination($this->paginateSelect(), $condition, [], ['path' => '/admin/product'], $perpage, [], ['key' => 'desc']);
+        $category = $this->ProductRepository->pagination($this->paginateSelect(), $condition, [], ['path' => '/admin/product'], $perpage, ['category'], ['key' => 'desc']);
         return $category;
     }
     public function created($request)
@@ -39,6 +39,9 @@ class ProductService extends BaseService
                 foreach ($data['image'] as $key => $image) {
                     $images[] = $this->convertImage($image, 'product-image');
                 }
+            }
+            if(!empty($data['materials'])) {
+                $data['materials'] = json_encode($data['materials']);
             }
             $productData = [
                 'name' => $data['name'] ?? null,
@@ -54,6 +57,7 @@ class ProductService extends BaseService
                 'user_id' => Auth::guard('admin')->id(),
                 'is_hot' => $data['is_hot'] ?? null,
                 'top_view' => $data['top_view'] ?? null,
+                'material_id' => $data['materials'] ?? null,
             ];
             $product = $this->ProductRepository->create($productData);
             // if ($request->hasFile('images_color')) {
@@ -196,5 +200,5 @@ class ProductService extends BaseService
     public function findById($slug) {
         return $this->ProductRepository->getCondition($slug, ['*'],['category']);
     }
-    
+
 }

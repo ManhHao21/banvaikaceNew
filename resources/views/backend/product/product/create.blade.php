@@ -78,10 +78,7 @@
                                                                 <label for="" class="control-label text-left">Đường
                                                                     dẫn sản phẩm
                                                                     <span class="text-danger">(*)</span></label>
-                                                                <input type="text" name="slug"
-                                                                    @php
-dd($product->slug); @endphp
-                                                                    value="{{ old('slug', $product->slug ?? '') }}"
+                                                                <input type="text" name="slug" value=""
                                                                     class="form-control slug" placeholder=""
                                                                     autocomplete="off">
                                                             </div>
@@ -103,44 +100,40 @@ dd($product->slug); @endphp
                                                         <div class="form-row col-lg-6">
                                                             <label for="" class="control-label text-left">SKU
                                                                 <span class="text-danger">(*)</span></label>
-                                                            <input type="text" name="sku"
-                                                                value="{{ old('sku', $product->sku ?? '') }}"
+                                                            <input type="text" name="sku" value="{"
                                                                 class="form-control">
                                                         </div>
                                                         <div class="form-row col-lg-6">
                                                             <label for="" class="control-label text-left">Kích
                                                                 thướcc sản phẩm
                                                                 <span class="text-danger">(*)</span></label>
-                                                            <input type="text" name="gms"
-                                                                value="{{ old('gms', $product->gms ?? '') }}"
+                                                            <input type="text" name="gms" value=""
                                                                 class="form-control">
                                                         </div>
                                                         <div class="form-row col-lg-6">
                                                             <label for="" class="control-label text-left">Giá
                                                                 tiền
                                                                 <span class="text-danger">(*)</span></label>
-                                                            <input type="text" name="price"
-                                                                value="{{ old('price', $product->price ?? '') }}"
+                                                            <input type="text" name="price" value=""
                                                                 class="form-control">
                                                         </div>
 
                                                         <div class="form-row col-lg-6">
                                                             <label for="" class="control-label text-left">giá giảm
                                                                 <span class="text-danger">(*)</span></label>
-                                                            <input type="text" name="seller"
-                                                                value="{{ old('seller', $product->seller ?? '') }}"
+                                                            <input type="text" name="seller" value=""
                                                                 class="form-control">
                                                         </div>
                                                         <div class="form-row col-lg-12">
                                                             <label for="materials" class="control-label text-left">Chất
                                                                 liệu <span class="text-danger">(*)</span></label>
-                                                            <select class="js-select2-multi form-control" name="materials"
+                                                                <select class="js-select2-multi" multiple="multiple" name="materials[]"
                                                                 id="materials">
-                                                                @foreach ($materials as $item)
-                                                                    <option value="{{ $item->id }}">
-                                                                        {{ $item->name }}</option>
-                                                                @endforeach
-                                                            </select>
+                                                                    @foreach ($materials as $item)
+                                                                        <option value="{{ $item->id }}">
+                                                                            {{ $item->name }}</option>
+                                                                    @endforeach
+                                                                </select>
                                                         </div>
 
                                                         <div class="col-lg-12">
@@ -230,7 +223,7 @@ dd($product->slug); @endphp
                                                                     class="control-label text-left">description
                                                                     <span class="text-danger">(*)</span></label>
                                                                 <textarea type="text" id="meta_description" name="description" value="" class="form-control"
-                                                                    placeholder="" autocomplete="off">{{ old('description', $product->description ?? '') }}</textarea>
+                                                                    placeholder="" autocomplete="off"></textarea>
                                                             </div>
                                                         </div>
 

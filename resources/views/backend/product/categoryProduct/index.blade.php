@@ -34,6 +34,7 @@
                                         <tr role="row">
                                             <th><input type="checkbox" class="checkAll" name="" id=""></th>
                                             <th>Tên danh mục</th>
+                                            <th>Danh mục cha</th>
                                             <th>Hình ảnh</th>
                                             <th>Tình trạng</th>
                                             <th>Hành động</th>
@@ -46,11 +47,14 @@
                                                     <td class="sorting_1"><input type="checkbox" name=""
                                                             value="{{ $item->id }}" class="checkItem input-check"
                                                             id=""></td>
-                                                    <td>{{ $item->parent->first() ? $item->parent->first()->name : '' }} {{ $item->parent->first() ? '>' : '' }} {{ $item->name }}
+                                                    <td>{{ $item->parent()->first() ? '--|' : '' }}{{ $item->name }}</td>
+                                                    <td>{{ $item->parent()->first() ? $item->parent->first()->name : '' }}
+
+                                                    <td><img src="{{ asset('storage') }}/{{ $item->image }}"
+                                                            alt="" width="90px" height="90px" srcset="">
                                                     </td>
-                                                    <td><img src="{{ asset('storage') }}/{{ $item->image }}" alt=""
-                                                            width="90px" height="90px" srcset=""></td>
-                                                   
+                                                    
+
                                                     <td>
                                                         <label class="switch">
                                                             <input type="checkbox"

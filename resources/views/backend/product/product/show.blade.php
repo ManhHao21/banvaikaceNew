@@ -55,8 +55,7 @@
                 <div class="ibox float-e-margins">
                     <div class="ibox-content">
                         <div class="table-responsive">
-                            <form action="{{ route('admin.product.destroy', $product->id) }}" class="form"
-                                method="post">
+                            <form action="{{ route('admin.product.destroy', $productitem->id) }}" class="form" method="post">
                                 @csrf
                                 @method('DELETE')
                                 <div id="DataTables_Table_0_wrapper"
@@ -69,8 +68,7 @@
                                         <div class="form-group col-sm-6 mb-2">
                                             <label>Tên danh mục <strong>(*)</strong> </label>
                                             <input type="text" class="form-control" name="name" disabled
-                                                value="{{ old('name', $product->name ?? '') }}"
-                                                style="width:100% !important">
+                                                value="{{ $productitem->name ?? '' }}" style="width:100% !important">
                                             @error('name')
                                                 <p style="color:red">{{ $message }}</p>
                                             @enderror
@@ -78,8 +76,7 @@
                                         <div class="form-group col-sm-6 mb-2">
                                             <label>Đường dẫn <strong>(*)</strong> </label>
                                             <input type="text" class="form-control" name="email" disabled
-                                                value="{{ old('email', $product->slug ?? '') }}"
-                                                style="width:100% !important">
+                                                value="{{ $productitem->slug ?? '' }}" style="width:100% !important">
                                             @error('email')
                                                 <p style="color:red">{{ $message }}</p>
                                             @enderror

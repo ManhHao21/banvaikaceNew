@@ -108,7 +108,7 @@ class MaterialService extends BaseService
             return false;
         }
     }
-    
+
     private function paginateSelect()
     {
         return [

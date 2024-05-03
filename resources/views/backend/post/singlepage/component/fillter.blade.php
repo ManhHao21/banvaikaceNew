@@ -37,7 +37,7 @@
                             </span>
                         </div>
                     </div>
-                    <a href="{{ route('admin.post.create') }}" class="btn btn-danger"><i class="fa fa-plus mr5"></i>Thêm
+                    <a href="{{ route('admin.singlepage.create') }}" class="btn btn-danger"><i class="fa fa-plus mr5"></i>Thêm
                         mới bài viết</a>
                 </div>
             </div>

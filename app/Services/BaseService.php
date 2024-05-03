@@ -9,7 +9,7 @@ class BaseService
 {
     public function convertImage($image, $dir = null)
     {
-        $path = $image->store($dir);
+        $path = $image->store($dir ?? 'image');
         return $path;
     }
 

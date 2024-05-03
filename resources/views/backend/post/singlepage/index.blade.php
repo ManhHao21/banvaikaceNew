@@ -49,14 +49,21 @@
                                                             id=""></td>
                                                     <td>{{ $item->title }}</td>
                                                     <td>{!! $item->content !!}</td>
-                                                    <td><img src="{{ asset('storage/' . $item->image) }}" width="200px"
-                                                            height="200px" alt="">
-                                                    </td>
+                                                    @php
+                                                        $image = json_decode($item->image);
+                                                    @endphp
+                                                    @if (!empty($image))
+                                                        <td><img src="{{ asset('storage/' . ($image[0] ?? '')) }}"
+                                                                width="200px" height="200px" alt=""></td>
+                                                    @else
+                                                        <td></td>
+                                                    @endif
+
                                                     <td>
                                                         <label class="switch">
                                                             <input type="checkbox"
                                                                 class="status js-switch-{{ $item->id }}"
-                                                                data-field="publish" data-model="Post"
+                                                                data-field="publish" data-model="SinglePage"
                                                                 {{ $item->publish == 1 ? 'checked' : '' }}
                                                                 data-id="{{ $item->id }}">
                                                             <span class="slider round"></span>
@@ -70,8 +77,8 @@
                                                                 data-original-title="View"
                                                                 href="{{ route('admin.singlepage.edit', $item->id) }}"><i
                                                                     class="fa fa-pencil" aria-hidden="true"></i></a>
-                                                            <a class="badge-danger d-flex btn p-2 btn-action" data-toggle="tooltip"
-                                                                data-placement="top" title=""
+                                                            <a class="badge-danger d-flex btn p-2 btn-action"
+                                                                data-toggle="tooltip" data-placement="top" title=""
                                                                 data-original-title="View"
                                                                 href="{{ route('admin.singlepage.show', $item->id) }}"><i
                                                                     class="fa fa-trash" aria-hidden="true"></i></a>

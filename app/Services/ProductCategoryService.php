@@ -83,10 +83,13 @@ class ProductCategoryService extends BaseService
     {
         DB::beginTransaction();
         try {
+            $cate = $this->ProductCategoryInterface->find($id);
             $data = $request->except(['_token']);
             $images = null;
             if ($request->hasFile('image')) {
                 $images = $this->convertImage($data['image'], 'category-product');
+            }else {
+                $images = $cate->image;
             }
             $category = [
                 'name' => $data['name'],
@@ -112,7 +115,7 @@ class ProductCategoryService extends BaseService
     {
         DB::beginTransaction();
         try {
-            $Product = $this->ProductCategoryInterface->deleted($id, true);
+            $Product = $this->ProductCategoryInterface->deleted($id);
             DB::commit();
             return true;
         } catch (\Exception $e) {
@@ -131,7 +134,7 @@ class ProductCategoryService extends BaseService
         // Gọi phương thức để lấy sản phẩm từ danh mục
         $category = $this->ProductCategoryInterface->findBySlug($request, $slug);
         return  $category;
-        
+
     }
 
 }
